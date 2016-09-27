@@ -4,18 +4,12 @@
 #include "printf.h"
 
 int ID = 1;
-
-//
-// Hardware conf
-//
+// int ID = 2;
+// ...
+// int ID = 5;
 
 // Set up nRF24L01 radio on SPI bus plus pins 9 & 10
-
 RF24 radio(9, 10);
-
-//
-// Topology
-//
 
 // Radio pipe addresses for the 2 nodes to communicate.
 const uint64_t pipes[6] = {
@@ -63,24 +57,17 @@ unsigned short getLength(unsigned int rudeMessage)
 
 void setup(void)
 {
-    //
-    // Print preamble
-    //
-
     Serial.begin(9600);
     printf_begin();
     printf("\nRemote Switch Arduino\n\r");
 
-    //
     // Setup and configure rf radio
-    //
-
     radio.begin();
-    //  radio.setAutoAck(1);                    // Ensure autoACK is enabled
     radio.setRetries(15, 15);
 
     radio.openWritingPipe(pipes[ID]);
     radio.openReadingPipe(1, pipes[ID]);
+    
     radio.startListening();
     radio.printDetails();
 }
@@ -118,7 +105,6 @@ void performAction(unsigned short rawMessage)
 }
 void loop(void)
 {
-
     // if there is data ready
     if (radio.available())
     {
