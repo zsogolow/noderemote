@@ -67,7 +67,7 @@ void setup(void)
     // Print preamble
     //
 
-    Serial.begin(57600);
+    Serial.begin(9600);
     printf_begin();
     printf("\nRemote Switch Arduino\n\r");
 

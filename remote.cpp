@@ -48,6 +48,7 @@ bool sendMessage(int action)
     //Returns true if ACK package is received
     //Stop listening
     radio.stopListening();
+    radio.openWritingPipe(pipes[1]);
     
     unsigned long message = action;
     printf("Now sending  %lu...", message);
