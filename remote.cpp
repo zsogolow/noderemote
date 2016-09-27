@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include <RF24/RF24.h>
+#include <inttypes.h>
 
 using namespace std;
 //RF24 radio("/dev/spidev0.0",8000000 , 25);
@@ -48,7 +49,7 @@ bool sendMessage(int action)
     //Returns true if ACK package is received
     //Stop listening
     radio.stopListening();
-    
+
     uint8_t pipe = action / 10;
     radio.openWritingPipe(pipes[pipe]);
 
@@ -90,7 +91,7 @@ bool sendMessage(int action)
         //If we received the message in time, let's read it and print it
         radio.read(&got_message, sizeof(unsigned long));
         printf("Yay! Got this response %lu.\n\r", got_message);
-        printf("%llu",pipes[got_message]);
+        printf("%" PRIx64 ".\n\r", pipes[got_message]);
         return true;
     }
 }
