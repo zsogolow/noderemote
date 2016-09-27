@@ -48,7 +48,7 @@ bool sendMessage(int action)
     //Returns true if ACK package is received
     //Stop listening
     radio.stopListening();
-    uint8_t pipe = action % 10;
+    uint8_t pipe = action / 10;
     radio.openWritingPipe(pipes[pipe]);
 
     unsigned long message = action;
