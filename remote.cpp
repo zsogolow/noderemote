@@ -54,11 +54,10 @@ bool sendMessage(int action)
     radio.openWritingPipe(pipes[pipe]);
 
     unsigned long message = action;
-    char* message1 = "hello, arduino!";
-    printf("Now sending  %s...", message1);
+    printf("Now sending  %lu...", message);
 
     //Send the message
-    bool ok = radio.write(&message1, sizeof(message1));
+    bool ok = radio.write(&message, sizeof(unsigned long));
     if (!ok)
     {
         printf("failed...\n\r");
