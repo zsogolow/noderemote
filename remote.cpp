@@ -54,10 +54,11 @@ bool sendMessage(int action)
     radio.openWritingPipe(pipes[pipe]);
 
     unsigned long message = action;
-    printf("Now sending  %lu...", message);
+    char* message1 = "hello, arduino!";
+    printf("Now sending  %s...", message1);
 
     //Send the message
-    bool ok = radio.write(&message, sizeof(unsigned long));
+    bool ok = radio.write(&message1, sizeof(message1));
     if (!ok)
     {
         printf("failed...\n\r");
@@ -91,7 +92,7 @@ bool sendMessage(int action)
         //If we received the message in time, let's read it and print it
         radio.read(&got_message, sizeof(unsigned long));
         printf("Yay! Got this response %lu.\n\r", got_message);
-        printf("%" PRIx64 ".\n\r", pipes[got_message]);
+        printf("Got response from: 0x%" PRIx64 "!!!!\n\r", pipes[got_message]);
         return true;
     }
 }
