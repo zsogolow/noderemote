@@ -114,7 +114,7 @@ void performAction(unsigned short rawMessage)
 
     if (id == ID)
     {
-        callback = action;
+        callback = ID;
     }
 
     sendCallback(callback);
