@@ -1,0 +1,7 @@
+#!/bin/bash 
+COUNTER=1
+while [  $COUNTER -lt 7 ]; do
+    echo The counter is $COUNTER
+    sudo ./remote -m $(($COUNTER * 10))
+    let COUNTER=COUNTER+1 
+done
