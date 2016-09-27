@@ -11,14 +11,15 @@ using namespace std;
 //RF24 radio(RPI_V2_GPIO_P1_15, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
+
 //const int role_pin = 7;
-const uint64_t pipes[][6] = {
-    {0xF0F0F0F1E1LL, 0xF0F0F0F0D2LL},
-    {0xF0F0F0F0E1LL, 0xF0F0F0F0C3LL},
-    {0xF0F0F0F0E1LL, 0xF0F0F0F0B4LL},
-    {0xF0F0F0F0E1LL, 0xF0F0F0F0A5LL},
-    {0xF0F0F0F0E1LL, 0xF0F0F0F096LL},
-    {0xF0F0F0F0E1LL, 0xF0F0F0F087LL},
+const uint64_t pipes[6] = {
+    0x7878787878LL,
+    0xB3B4B5B6F1LL,
+    0xB3B4B5B6CDLL,
+    0xB3B4B5B6A3LL,
+    0xB3B4B5B60FLL,
+    0xB3B4B5B605LL,
 };
 
 // hack to avoid SEG FAULT, issue #46 on RF24 github https://github.com/TMRh20/RF24.git
@@ -30,28 +31,24 @@ void setup(void)
     printf("\nPreparing interface\n");
     radio.begin();
     radio.setRetries(15, 15);
-    //      radio.setChannel(0x4c);
-    //      radio.setPALevel(RF24_PA_MAX);
-    //      radio.setPALevel(RF24_PA_MAX);
 
-//    radio.openWritingPipe(pipes[0][0]);
-    radio.openReadingPipe(1, pipes[0][1]);
-    radio.openReadingPipe(2, pipes[1][1]);
-    radio.openReadingPipe(3, pipes[2][1]);
-    radio.openReadingPipe(4, pipes[3][1]);
-    radio.openReadingPipe(5, pipes[4][1]);
+    radio.openReadingPipe(0, pipes[0]);
+    radio.openReadingPipe(1, pipes[1]);
+    radio.openReadingPipe(2, pipes[2]);
+    radio.openReadingPipe(3, pipes[3]);
+    radio.openReadingPipe(4, pipes[4]);
+    radio.openReadingPipe(5, pipes[5]);
 
     radio.printDetails();
 }
 
 bool sendMessage(int action)
 {
-//printf("why oh why");
-
     //This function send a message, the 'action', to the arduino and wait for answer
     //Returns true if ACK package is received
     //Stop listening
     radio.stopListening();
+    
     unsigned long message = action;
     printf("Now sending  %lu...", message);
 
@@ -125,7 +122,7 @@ int main(int argc, char **argv)
         }
 
         //return 0 if everything went good, 2 otherwise
-        if (counter < 5) 
+        if (counter < 5)
             return 0;
         else
             return 2;
