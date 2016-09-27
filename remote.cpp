@@ -89,7 +89,7 @@ bool sendMessage(int action)
     {
         //If we received the message in time, let's read it and print it
         radio.read(&got_message, sizeof(unsigned long));
-        printf("Yay! Got this response %lu.\n\r", "got message from " + pipes[got_message]);
+        printf("Yay! Got this response %s.\n\r", "got message from " + pipes[got_message]);
         return true;
     }
 }
