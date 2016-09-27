@@ -112,10 +112,7 @@ void performAction(unsigned short rawMessage)
     action = getMessage(castedMessage);
     id = getId(castedMessage, length);
 
-    if (id == ID)
-    {
-        callback = ID;
-    }
+    callback = ID;
 
     sendCallback(callback);
 }

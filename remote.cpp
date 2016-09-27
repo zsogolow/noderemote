@@ -6,6 +6,7 @@
 #include <iostream>
 #include <RF24/RF24.h>
 #include <inttypes.h>
+#include <string>
 
 using namespace std;
 //RF24 radio("/dev/spidev0.0",8000000 , 25);
