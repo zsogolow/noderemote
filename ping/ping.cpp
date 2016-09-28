@@ -16,7 +16,6 @@ using namespace std;
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 
-//const int role_pin = 7;
 const uint64_t pipes[6] = {
     0x7878787878LL,
     0xB3B4B5B6F1LL,
@@ -25,9 +24,6 @@ const uint64_t pipes[6] = {
     0xB3B4B5B60FLL,
     0xB3B4B5B605LL,
 };
-
-// hack to avoid SEG FAULT, issue #46 on RF24 github https://github.com/TMRh20/RF24.git
-unsigned long got_message;
 
 void setup(void)
 {
@@ -82,7 +78,6 @@ bool listenForACK()
         Packet packet;
         radio.read(&packet, sizeof(packet));
         printf("Yay! Got action %u from: 0x%" PRIx64 " (%u).\n\r", packet.action, pipes[packet.id], packet.id);
-        // printf("Got response from: 0x%" PRIx64 "!!!!\n\r", pipes[got_message]);
         return true;
     }
 }

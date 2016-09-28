@@ -25,40 +25,6 @@ struct Packet
 #define ID 1
 #define PING 1
 
-char *convertNumberIntoArray(unsigned short number, unsigned short length)
-{
-
-    char *arr = (char *)malloc(length * sizeof(char)), *curr = arr;
-    do
-    {
-        *curr++ = number % 10;
-        number /= 10;
-    } while (number != 0);
-    return arr;
-}
-
-unsigned short getId(char *rawMessage, unsigned short length)
-{
-    unsigned short i = 0;
-    unsigned short id = 0;
-    for (i = 1; i < length; i++)
-    {
-        id += rawMessage[i] * pow(10, i - 1);
-    }
-    return id;
-}
-
-unsigned short getMessage(char *rawMessage)
-{
-    unsigned short message = rawMessage[0];
-    return (unsigned short)message;
-}
-unsigned short getLength(unsigned int rudeMessage)
-{
-    unsigned short length = (unsigned short)(log10((float)rudeMessage)) + 1;
-    return length;
-}
-
 void setup(void)
 {
     Serial.begin(9600);
