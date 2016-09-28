@@ -111,20 +111,18 @@ int main(int argc, char **argv)
     //Define the options
     while ((choice = getopt(argc, argv, ":i:m")) != -1)
     {
-        if (choice == 'i')
+        switch (choice)
         {
+        case 'i':
             int arg = atoi(optarg);
             id = arg;
-            printf("%s", optarg);
-        }
-        else if (choice == 'm')
-        {
+            break;
+        case 'm':
             int arg = atoi(optarg);
-            printf("%s", optarg);
             msgType = arg;
-        }
-        else
-        {
+            break;
+        case '?':
+            exit(2);
             break;
         }
     }
