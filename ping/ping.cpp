@@ -46,8 +46,8 @@ void setup(void)
     radio.printDetails();
 }
 
-#define PING = 1
-#define MSG = 2
+#define PING 1
+#define MSG 2
 
 bool listenForACK()
 {
@@ -106,8 +106,6 @@ bool send(int id, int action, char *msg)
     radio.stopListening();
 
     radio.openWritingPipe(pipes[id]);
-
-    printf("Now sending  %lu...", action);
 
     switch (action)
     {
