@@ -53,6 +53,7 @@ struct Packet
 {
     uint8_t id;
     uint8_t action;
+    char *msg;
 };
 
 bool listenForACK()
@@ -92,7 +93,8 @@ bool sendPing(int id)
 {
     Packet packet;
     packet.id = id;
-    packet.action = 12;
+    packet.action = PING;
+    packet.msg = "PING";
 
     bool ok = radio.write(&packet, sizeof(packet));
     if (!ok)
