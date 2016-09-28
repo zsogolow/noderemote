@@ -83,7 +83,7 @@ bool listenForACK()
         //If we received the message in time, let's read it and print it
         Packet packet;
         radio.read(&packet, sizeof(packet));
-        printf("Yay! Got this response %u from: 0x%" PRIx64 ".\n\r", packet.action, pipes[packet.id]);
+        printf("Yay! Got this response %s from: 0x%" PRIx64 ".\n\r", packet.msg, pipes[packet.id]);
         // printf("Got response from: 0x%" PRIx64 "!!!!\n\r", pipes[got_message]);
         return true;
     }
