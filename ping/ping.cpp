@@ -115,7 +115,7 @@ int main(int argc, char **argv)
         {
             int arg = atoi(optarg);
             id = arg;
-            printf("%u", optarg);
+            printf("%s", optarg);
         }
         else if (choice == 'm')
         {
@@ -124,9 +124,8 @@ int main(int argc, char **argv)
         }
         else
         {
+            break;
         }
-
-        
    
     }
 
