@@ -3,11 +3,6 @@
 #include "RF24.h"
 #include "printf.h"
 
-int ID = 1;
-// int ID = 2;
-// ...
-// int ID = 5;
-
 // Set up nRF24L01 radio on SPI bus plus pins 9 & 10
 RF24 radio(9, 10);
 
@@ -27,6 +22,7 @@ struct Packet
     uint8_t action;
 };
 
+#define ID 1
 #define PING 1
 
 char *convertNumberIntoArray(unsigned short number, unsigned short length)
