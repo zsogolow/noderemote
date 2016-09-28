@@ -21,11 +21,11 @@ const uint64_t pipes[6] = {
     0xB3B4B5B605LL,
 };
 
-typedef struct
+struct Packet
 {
     int id;
     int action;
-} Packet;
+};
 
 #define PING 1
 #define MSG 2
@@ -112,7 +112,7 @@ void loop(void)
             radio.read(&packet, sizeof(packet));
 
             // Spew it
-            Serial.println("packet.action");
+            Serial.println(packet.action);
 
             Packet cb;
 
