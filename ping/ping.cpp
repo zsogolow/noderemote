@@ -76,15 +76,15 @@ Packet listenForACK()
     {
         //If we waited too long the transmission failed
         printf("Oh gosh, it's not giving me any response...\n\r");
-        return false;
+        return NULL;
     }
     else
     {
         //If we received the message in time, let's read it and print it
         radio.read(&packet, sizeof(packet));
-        printf("Yay! Got this response %lu from: 0x%" PRIx64 ".\n\r", packet.msg);
+        printf("Yay! Got this response %lu from: 0x%" PRIx64 ".\n\r", packet.msg, pipes[packet.id]);
         // printf("Got response from: 0x%" PRIx64 "!!!!\n\r", pipes[got_message]);
-        return true;
+        return packet;
     }
 }
 
@@ -101,7 +101,8 @@ bool sendPing(int id)
     else
         printf("ok!\n\r");
 
-    return listenForACK();
+    Packet ack = listenForACK();
+    return ack != NULL;
 }
 
 bool sendMSG(int id, char *msg)
