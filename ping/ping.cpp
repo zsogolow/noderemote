@@ -47,13 +47,11 @@ void setup(void)
 }
 
 #define PING 1
-#define MSG 2
 
 struct Packet
 {
     uint8_t id;
     uint8_t action;
-    char *msg;
 };
 
 bool listenForACK()
@@ -83,7 +81,7 @@ bool listenForACK()
         //If we received the message in time, let's read it and print it
         Packet packet;
         radio.read(&packet, sizeof(packet));
-        printf("Yay! Got this response %s from: 0x%" PRIx64 ".\n\r", packet.msg, pipes[packet.id]);
+        printf("Yay! Got action %u from: 0x%" PRIx64 " (%u).\n\r", packet.action, pipes[packet.id], packet.id);
         // printf("Got response from: 0x%" PRIx64 "!!!!\n\r", pipes[got_message]);
         return true;
     }
@@ -94,7 +92,6 @@ bool sendPing(int id)
     Packet packet;
     packet.id = id;
     packet.action = PING;
-    packet.msg = "PING";
 
     bool ok = radio.write(&packet, sizeof(packet));
     if (!ok)
@@ -103,11 +100,6 @@ bool sendPing(int id)
         printf("ok!\n\r");
 
     return listenForACK();
-}
-
-bool sendMSG(int id, char *msg)
-{
-    return false;
 }
 
 bool send(int id, int action, char *msg)
@@ -122,9 +114,6 @@ bool send(int id, int action, char *msg)
     {
     case PING:
         return sendPing(id);
-        break;
-    case MSG:
-        return sendMSG(id, msg);
         break;
     default:
         return false;

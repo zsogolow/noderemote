@@ -25,7 +25,6 @@ struct Packet
 {
     uint8_t id;
     uint8_t action;
-    char *msg;
 };
 
 #define PING 1
@@ -113,7 +112,7 @@ void loop(void)
             radio.read(&packet, sizeof(packet));
 
             // Spew it
-            Serial.println(packet.msg);
+            Serial.println(packet.action);
 
             Packet cb;
 
@@ -122,7 +121,6 @@ void loop(void)
             case PING:
                 cb.id = packet.id;
                 cb.action = packet.action;
-                cb.msg = "PONG";
                 break;
             case MSG:
                 cb.id = packet.id;
