@@ -53,7 +53,6 @@ typedef struct
 {
     int id;
     int action;
-    char *msg;
 }
 Packet;
 
