@@ -28,7 +28,6 @@ struct Packet
 };
 
 #define PING 1
-#define MSG 2
 
 char *convertNumberIntoArray(unsigned short number, unsigned short length)
 {
@@ -94,7 +93,13 @@ void sendCallback(Packet callback)
     radio.startListening();
 }
 
-Packet packet;
+Packet handlePing(Packet packet)
+{
+    Packet pong;
+    pong.id = packet.id;
+    pong.action = packet.action;
+    return pong;
+}
 
 void loop(void)
 {
@@ -109,6 +114,7 @@ void loop(void)
         while (radio.available())
         {
             // Fetch the payload, and see if this was the last one.
+            Packet packet;
             radio.read(&packet, sizeof(packet));
 
             // Spew it
@@ -119,12 +125,10 @@ void loop(void)
             switch (packet.action)
             {
             case PING:
-                cb.id = packet.id;
-                cb.action = packet.action;
+                cb = handlePing(packet);
+
                 break;
-            case MSG:
-                cb.id = packet.id;
-                cb.action = packet.action;
+            default:
                 break;
             }
 

@@ -102,6 +102,21 @@ bool sendPing(int id)
     return listenForACK();
 }
 
+bool sendAction(int id, int action)
+{
+    Packet packet;
+    packet.id = id;
+    packet.action = action;
+
+    bool ok = radio.write(&packet, sizeof(packet));
+    if (!ok)
+        printf("failed...\n\r");
+    else
+        printf("ok!\n\r");
+
+    return listenForACK();
+}
+
 bool send(int id, int action, char *msg)
 {
     //Returns true if ACK package is received
@@ -116,6 +131,7 @@ bool send(int id, int action, char *msg)
         return sendPing(id);
         break;
     default:
+        return sendAction(id, action);
         return false;
     }
 }
