@@ -101,31 +101,37 @@ int main(int argc, char **argv)
 {
     char choice;
     setup();
-    bool switched = false;
-    int counter = 0;
+    bool success = false;
+    int numtries = 0;
 
     //Define the options
     while ((choice = getopt(argc, argv, "m:")) != -1)
     {
-        if (choice == 'm')
+        printf(choice);
+        if (choice == 'a')
         {
-            printf("\n Talking with my NRF24l01+ friends out there....\n");
-            while (switched == false && counter < 5)
-            {
-                switched = sendMessage(atoi(optarg));
-                counter++;
-                usleep(10);
-            }
+            // printf("\n Talking with my NRF24l01+ friends out there....\n");
+            // while (success == false && numtries < 5)
+            // {
+            //     int arg = atoi(optarg);
+            //     success = sendMessage();
+            //     numtries++;
+            //     usleep(10);
+            // }
         }
-        else
+        else if (choice == 'd')
         {
-            // A little help:
-            printf("\n\rIt's time to make some choices...\n");
-            printf("\n\rTIP: Use -m idAction for the message to send. ");
+            
+        }
+        // else
+        // {
+        //     // A little help:
+        //     printf("\n\rIt's time to make some choices...\n");
+        //     printf("\n\rTIP: Use -m idAction for the message to send. ");
 
-            printf("\n\rExample (id number 12, action number 1): ");
-            printf("\nsudo ./remote -m 121\n");
-        }
+        //     printf("\n\rExample (id number 12, action number 1): ");
+        //     printf("\nsudo ./remote -m 121\n");
+        // }
 
         //return 0 if everything went good, 2 otherwise
         if (counter < 5)
@@ -133,4 +139,7 @@ int main(int argc, char **argv)
         else
             return 2;
     }
+
+    printf("\n\r done parsing args...\n");
+    
 }
