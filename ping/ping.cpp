@@ -1,5 +1,7 @@
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
-#include <string>
 #include <getopt.h>
 #include <cstdlib>
 #include <sstream>
@@ -44,29 +46,11 @@ void setup(void)
     radio.printDetails();
 }
 
-bool sendMessage(int action)
+#define PING = 1
+#define MSG = 2
+
+bool listenForACK()
 {
-    //This function send a message, the 'action', to the arduino and wait for answer
-    //Returns true if ACK package is received
-    //Stop listening
-    radio.stopListening();
-
-    uint8_t pipe = action / 10;
-    radio.openWritingPipe(pipes[pipe]);
-
-    unsigned long message = action;
-    printf("Now sending  %lu...", message);
-
-    //Send the message
-    bool ok = radio.write(&message, sizeof(unsigned long));
-    if (!ok)
-    {
-        printf("failed...\n\r");
-    }
-    else
-    {
-        printf("ok!\n\r");
-    }
     //Listen for ACK
     radio.startListening();
     //Let's take the time while we listen
@@ -97,40 +81,113 @@ bool sendMessage(int action)
     }
 }
 
+bool sendPing(int id)
+{
+    unsigned long message = id;
+    //Send the message
+    bool ok = radio.write(&message, sizeof(unsigned long));
+    if (!ok)
+        printf("failed...\n\r");
+    else
+        printf("ok!\n\r");
+
+    return listenForACK();
+}
+
+bool sendMSG(int id, char *msg)
+{
+}
+
+bool send(int id, int action, char *msg)
+{
+    //Returns true if ACK package is received
+    //Stop listening
+    radio.stopListening();
+
+    radio.openWritingPipe(pipes[id]);
+
+    switch (action)
+    {
+    case PING:
+        return sendPing(id);
+        break;
+    case MSG:
+        return sendMSG(id, msg);
+        break;
+    }
+
+    printf("Now sending  %lu...", message);
+}
+
 int main(int argc, char **argv)
 {
-    char choice;
-    setup();
-    bool switched = false;
-    int counter = 0;
+    int dflag = 0;
+    int tflag = 0;
+    char *cvalue = NULL;
+    int dvalue = 0;
+    int tvalue = 0;
+    int index;
+    int c;
 
-    //Define the options
-    while ((choice = getopt(argc, argv, "m:")) != -1)
+    opterr = 0;
+    while ((c = getopt(argc, argv, "d:t:c:")) != -1)
     {
-        if (choice == 'm')
+        switch (c)
         {
-            printf("\n Talking with my NRF24l01+ friends out there....\n");
-            while (switched == false && counter < 5)
+        case 'd':
+            dflag = 1;
+            dvalue = atoi(optarg);
+            break;
+
+        case 't':
+            tflag = 1;
+            tvalue = atoi(optarg);
+            break;
+
+        case 'c':
+            cvalue = optarg;
+            break;
+
+        case '?':
+            if (optopt == 'c')
             {
-                switched = sendMessage(atoi(optarg));
-                counter++;
-                usleep(10);
+                fprintf(stderr, "Option -%c requires an argument.\n", optopt);
             }
-        }
-        else
-        {
-            // A little help:
-            printf("\n\rIt's time to make some choices...\n");
-            printf("\n\rTIP: Use -m idAction for the message to send. ");
+            else if (isprint(optopt))
+            {
+                fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+            }
+            else
+            {
+                fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+            }
+            return 1;
 
-            printf("\n\rExample (id number 12, action number 1): ");
-            printf("\nsudo ./remote -m 121\n");
+        default:
+            abort();
         }
-
-        //return 0 if everything went good, 2 otherwise
-        if (counter < 5)
-            return 0;
-        else
-            return 2;
     }
+
+    setup();
+
+    bool success = false;
+    int maxtries = 5;
+    int numtries = 0;
+
+    while (success == false && numtries < maxtries)
+    {
+        success = send(dvalue, tvalue, cvalue);
+        numtries++;
+        usleep(10);
+    }
+
+    // printf("dflag = %d, tflag = %d, cvalue = %s\n", dflag, tflag, cvalue);
+    // printf("dvalue = %d, tvalue = %d, cvalue = %s\n", dvalue, tvalue, cvalue);
+
+    // for (index = optind; index < argc; index++)
+    // {
+    //     printf("Non-option argument %s\n", argv[index]);
+    // }
+
+    return 0;
 }
