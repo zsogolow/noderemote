@@ -101,38 +101,36 @@ int main(int argc, char **argv)
 {
     char choice;
     setup();
-    bool success = false;
-    int numtries = 0;
-    int maxtries = 5;
-
-    int id = -1;
-    int msgType = -1;
-    int arg = -1;
+    bool switched = false;
+    int counter = 0;
 
     //Define the options
-    while ((choice = getopt(argc, argv, ":i:m")) != -1)
+    while ((choice = getopt(argc, argv, "m:")) != -1)
     {
-        switch (choice)
+        if (choice == 'm')
         {
-        case 'i':
-            arg = atoi(optarg);
-            id = arg;
-            break;
-        case 'm':
-            arg = atoi(optarg);
-            msgType = arg;
-            break;
-        case '?':
-            exit(2);
-            break;
+            printf("\n Talking with my NRF24l01+ friends out there....\n");
+            while (switched == false && counter < 5)
+            {
+                switched = sendMessage(atoi(optarg));
+                counter++;
+                usleep(10);
+            }
         }
+        else
+        {
+            // A little help:
+            printf("\n\rIt's time to make some choices...\n");
+            printf("\n\rTIP: Use -m idAction for the message to send. ");
+
+            printf("\n\rExample (id number 12, action number 1): ");
+            printf("\nsudo ./remote -m 121\n");
+        }
+
+        //return 0 if everything went good, 2 otherwise
+        if (counter < 5)
+            return 0;
+        else
+            return 2;
     }
-
-    printf("%u %u", id, msgType);
-
-    //return 0 if everything went good, 2 otherwise
-    if (numtries < maxtries)
-        return 0;
-    else
-        return 2;
 }
