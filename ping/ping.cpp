@@ -96,6 +96,7 @@ bool sendPing(int id)
 
 bool sendMSG(int id, char *msg)
 {
+    return false;
 }
 
 bool send(int id, int action, char *msg)
@@ -106,6 +107,8 @@ bool send(int id, int action, char *msg)
 
     radio.openWritingPipe(pipes[id]);
 
+    printf("Now sending  %lu...", action);
+
     switch (action)
     {
     case PING:
@@ -114,9 +117,9 @@ bool send(int id, int action, char *msg)
     case MSG:
         return sendMSG(id, msg);
         break;
+    default:
+        return false;
     }
-
-    printf("Now sending  %lu...", message);
 }
 
 int main(int argc, char **argv)
