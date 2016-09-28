@@ -67,7 +67,7 @@ void setup(void)
 
     radio.openWritingPipe(pipes[ID]);
     radio.openReadingPipe(1, pipes[ID]);
-    
+
     radio.startListening();
     radio.printDetails();
 }
@@ -89,20 +89,33 @@ void sendCallback(unsigned short callback)
     radio.startListening();
 }
 
-void performAction(unsigned short rawMessage)
+void performAction(Packet packet)
 {
-    unsigned short action, id, length, callback;
-    char *castedMessage;
+    switch (packet.action)
+    {
+    case PING:
+        break;
+    case MSG:
+        break;
+    }
 
-    length = getLength(rawMessage);
-    castedMessage = convertNumberIntoArray(rawMessage, length);
-    action = getMessage(castedMessage);
-    id = getId(castedMessage, length);
-
-    callback = ID;
+    callback = packet.id;
 
     sendCallback(callback);
 }
+
+#define PING 1
+#define MSG 2
+
+struct Packet
+{
+    int id;
+    int action;
+    char *msg;
+}
+
+Packet packet;
+
 void loop(void)
 {
     // if there is data ready
@@ -117,12 +130,12 @@ void loop(void)
         while (radio.available())
         {
             // Fetch the payload, and see if this was the last one.
-            radio.read(&rawMessage, sizeof(unsigned long));
+            radio.read(&packet, sizeof(packet));
 
             // Spew it
-            printf("Got message %d...", rawMessage);
+            printf("Got message %d...", packet.action);
 
-            performAction(rawMessage);
+            performAction(packet);
 
             delay(10);
         }

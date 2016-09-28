@@ -49,6 +49,12 @@ void setup(void)
 #define PING 1
 #define MSG 2
 
+struct Packet {
+    int id;
+    int action;
+    char *msg;
+}
+
 bool listenForACK()
 {
     //Listen for ACK
@@ -83,9 +89,12 @@ bool listenForACK()
 
 bool sendPing(int id)
 {
-    unsigned long message = id;
-    //Send the message
-    bool ok = radio.write(&message, sizeof(unsigned long));
+    Packet packet;
+    packet.id = id;
+    packet.action = PING;
+    packet.msg = "";
+
+    bool ok = radio.write(&packet, sizeof(packet));
     if (!ok)
         printf("failed...\n\r");
     else
