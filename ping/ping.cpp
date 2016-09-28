@@ -53,7 +53,7 @@ struct Packet {
     int id;
     int action;
     char *msg;
-}
+};
 
 bool listenForACK()
 {

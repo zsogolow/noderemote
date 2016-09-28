@@ -112,7 +112,7 @@ struct Packet
     int id;
     int action;
     char *msg;
-}
+};
 
 Packet packet;
 
