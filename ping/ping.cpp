@@ -107,7 +107,7 @@ int main(int argc, char **argv)
     //Define the options
     while ((choice = getopt(argc, argv, "m:")) != -1)
     {
-        printf(choice);
+        printf("%c",choice);
         if (choice == 'a')
         {
             // printf("\n Talking with my NRF24l01+ friends out there....\n");
