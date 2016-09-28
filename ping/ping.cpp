@@ -83,7 +83,7 @@ bool listenForACK()
     {
         //If we received the message in time, let's read it and print it
         radio.read(&packet, sizeof(packet));
-        printf("Yay! Got this response %s from: 0x%" PRIx64 ".\n\r", packet.msg, pipes[packet.id]);
+        printf("Yay! Got this response %s from: 0x%" PRIx64 ".\n\r", packet.action, pipes[packet.id]);
         // printf("Got response from: 0x%" PRIx64 "!!!!\n\r", pipes[got_message]);
         return true;
     }
@@ -94,7 +94,6 @@ bool sendPing(int id)
     Packet packet;
     packet.id = id;
     packet.action = 12;
-    packet.msg = "PING";
 
     bool ok = radio.write(&packet, sizeof(packet));
     if (!ok)
