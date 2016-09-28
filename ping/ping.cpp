@@ -49,11 +49,13 @@ void setup(void)
 #define PING 1
 #define MSG 2
 
-struct Packet {
+typedef struct
+{
     int id;
     int action;
     char *msg;
-};
+}
+Packet;
 
 bool listenForACK()
 {
