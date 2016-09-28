@@ -126,12 +126,15 @@ int main(int argc, char **argv)
         {
         }
 
-        printf("%u %u", id, msgType);
         
-        //return 0 if everything went good, 2 otherwise
+   
+    }
+
+        printf("%u %u", id, msgType);
+    
+         //return 0 if everything went good, 2 otherwise
         if (numtries < maxtries)
             return 0;
         else
             return 2;
-    }
 }
