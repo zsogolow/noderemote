@@ -23,8 +23,8 @@ const uint64_t pipes[6] = {
 
 struct Packet
 {
-    int id;
-    int action;
+    uint8_t id;
+    uint8_t action;
 };
 
 #define PING 1

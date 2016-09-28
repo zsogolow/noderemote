@@ -51,8 +51,8 @@ void setup(void)
 
 struct Packet
 {
-    int id;
-    int action;
+    uint8_t id;
+    uint8_t action;
 };
 
 bool listenForACK()
@@ -82,7 +82,7 @@ bool listenForACK()
         //If we received the message in time, let's read it and print it
         Packet packet;
         radio.read(&packet, sizeof(packet));
-        printf("Yay! Got this response %s from: 0x%" PRIx64 ".\n\r", packet.action, pipes[packet.id]);
+        printf("Yay! Got this response %u from: 0x%" PRIx64 ".\n\r", packet.action, pipes[packet.id]);
         // printf("Got response from: 0x%" PRIx64 "!!!!\n\r", pipes[got_message]);
         return true;
     }
