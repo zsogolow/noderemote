@@ -101,6 +101,14 @@ Packet handlePing(Packet packet)
     return pong;
 }
 
+Packet handleAction(Packet packet)
+{
+    Packet handled;
+    handled.id = packet.id;
+    handled.action = packet.action;
+    return handled;
+}
+
 void loop(void)
 {
     // if there is data ready
@@ -126,9 +134,9 @@ void loop(void)
             {
             case PING:
                 cb = handlePing(packet);
-
                 break;
             default:
+                cb = handleAction(packet);
                 break;
             }
 
