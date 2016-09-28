@@ -21,6 +21,17 @@ const uint64_t pipes[6] = {
     0xB3B4B5B605LL,
 };
 
+
+typedef struct {
+    int id;
+    int action;
+    char *msg;
+}
+Packet;
+
+#define PING 1
+#define MSG 2
+
 char *convertNumberIntoArray(unsigned short number, unsigned short length)
 {
 
@@ -72,7 +83,7 @@ void setup(void)
     radio.printDetails();
 }
 
-void sendCallback(Packet *callback)
+void sendCallback(Packet callback)
 {
     // First, stop listening so we can talk
     radio.stopListening();
@@ -84,16 +95,6 @@ void sendCallback(Packet *callback)
     // Now, resume listening so we catch the next packets.
     radio.startListening();
 }
-
-struct Packet
-{
-    int id;
-    int action;
-    char *msg;
-};
-
-#define PING 1
-#define MSG 2
 
 Packet packet;
 

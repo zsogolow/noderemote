@@ -92,7 +92,7 @@ bool sendPing(int id)
 {
     Packet packet;
     packet.id = id;
-    packet.action = PING;
+    packet.action = 12;
     packet.msg = "PING";
 
     bool ok = radio.write(&packet, sizeof(packet));
