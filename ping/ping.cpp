@@ -114,7 +114,7 @@ int main(int argc, char **argv)
             {
                 int arg = atoi(optarg);
                 printf("%ui", arg);
-                success = sendMessage();
+                success = sendMessage(arg);
                 numtries++;
                 usleep(10);
             }
