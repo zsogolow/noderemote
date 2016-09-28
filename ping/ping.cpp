@@ -108,36 +108,6 @@ int main(int argc, char **argv)
     while ((choice = getopt(argc, argv, "m:")) != -1)
     {
         printf("%c",choice);
-        if (choice == 'a')
-        {
-            // printf("\n Talking with my NRF24l01+ friends out there....\n");
-            // while (success == false && numtries < 5)
-            // {
-            //     int arg = atoi(optarg);
-            //     success = sendMessage();
-            //     numtries++;
-            //     usleep(10);
-            // }
-        }
-        else if (choice == 'd')
-        {
-            
-        }
-        // else
-        // {
-        //     // A little help:
-        //     printf("\n\rIt's time to make some choices...\n");
-        //     printf("\n\rTIP: Use -m idAction for the message to send. ");
-
-        //     printf("\n\rExample (id number 12, action number 1): ");
-        //     printf("\nsudo ./remote -m 121\n");
-        // }
-
-        //return 0 if everything went good, 2 otherwise
-        if (numtries < 5)
-            return 0;
-        else
-            return 2;
     }
 
     printf("\n\r done parsing args...\n");
