@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     int msgType = -1;
 
     //Define the options
-    while ((choice = getopt(argc, argv, "i:m:")) != -1)
+    while ((choice = getopt(argc, argv, "i:m:")) != EOF)
     {
         if (choice == 'i')
         {
