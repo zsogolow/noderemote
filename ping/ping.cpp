@@ -55,8 +55,9 @@ struct Packet {
     char *msg;
 };
 
-bool listenForACK()
+Packet listenForACK()
 {
+    Packet packet;
     //Listen for ACK
     radio.startListening();
     //Let's take the time while we listen
@@ -80,9 +81,9 @@ bool listenForACK()
     else
     {
         //If we received the message in time, let's read it and print it
-        radio.read(&got_message, sizeof(unsigned long));
-        printf("Yay! Got this response %lu.\n\r", got_message);
-        printf("Got response from: 0x%" PRIx64 "!!!!\n\r", pipes[got_message]);
+        radio.read(&packet, sizeof(packet));
+        printf("Yay! Got this response %lu from: 0x%" PRIx64 ".\n\r", packet.msg);
+        // printf("Got response from: 0x%" PRIx64 "!!!!\n\r", pipes[got_message]);
         return true;
     }
 }
@@ -92,7 +93,7 @@ bool sendPing(int id)
     Packet packet;
     packet.id = id;
     packet.action = PING;
-    packet.msg = "";
+    packet.msg = "PING";
 
     bool ok = radio.write(&packet, sizeof(packet));
     if (!ok)

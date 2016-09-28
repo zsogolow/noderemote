@@ -72,40 +72,18 @@ void setup(void)
     radio.printDetails();
 }
 
-void doAction(unsigned short id, unsigned short action)
-{
-}
-
-void sendCallback(unsigned short callback)
+void sendCallback(Packet *callback)
 {
     // First, stop listening so we can talk
     radio.stopListening();
 
     // Send the final one back.
-    radio.write(&callback, sizeof(unsigned short));
+    radio.write(&callback, sizeof(callback));
     printf("Sent response.\n\r");
 
     // Now, resume listening so we catch the next packets.
     radio.startListening();
 }
-
-void performAction(Packet packet)
-{
-    switch (packet.action)
-    {
-    case PING:
-        break;
-    case MSG:
-        break;
-    }
-
-    callback = packet.id;
-
-    sendCallback(callback);
-}
-
-#define PING 1
-#define MSG 2
 
 struct Packet
 {
@@ -113,6 +91,9 @@ struct Packet
     int action;
     char *msg;
 };
+
+#define PING 1
+#define MSG 2
 
 Packet packet;
 
@@ -124,8 +105,7 @@ void loop(void)
         // Dump the payloads until we've gotten everything
         unsigned short message;
         bool done;
-        //      char * new;
-        unsigned short rawMessage;
+
         done = false;
         while (radio.available())
         {
@@ -133,9 +113,25 @@ void loop(void)
             radio.read(&packet, sizeof(packet));
 
             // Spew it
-            printf("Got message %d...", packet.action);
+            printf("Got message %d...", packet.msg);
 
-            performAction(packet);
+            Packet cb;
+
+            switch (packet.action)
+            {
+            case PING:
+                cb.id = packet.id;
+                cb.action = packet.action;
+                cb.msg = "pong";
+                break;
+            case MSG:
+                cb.id = packet.id;
+                cb.action = packet.action;
+                cb.msg = packet.msg;
+                break;
+            }
+
+            sendCallback(cb);
 
             delay(10);
         }
