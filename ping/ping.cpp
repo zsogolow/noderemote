@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     int msgType = -1;
 
     //Define the options
-    while ((choice = getopt(argc, argv, ":i:m")) != EOF)
+    while ((choice = getopt(argc, argv, ":i:m")) != -1)
     {
         if (choice == 'i')
         {
@@ -120,20 +120,20 @@ int main(int argc, char **argv)
         else if (choice == 'm')
         {
             int arg = atoi(optarg);
+            printf("%s", optarg);
             msgType = arg;
         }
         else
         {
             break;
         }
-   
     }
 
-        printf("%u %u", id, msgType);
-    
-         //return 0 if everything went good, 2 otherwise
-        if (numtries < maxtries)
-            return 0;
-        else
-            return 2;
+    printf("%u %u", id, msgType);
+
+    //return 0 if everything went good, 2 otherwise
+    if (numtries < maxtries)
+        return 0;
+    else
+        return 2;
 }
