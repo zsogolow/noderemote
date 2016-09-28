@@ -107,6 +107,7 @@ int main(int argc, char **argv)
 
     int id = -1;
     int msgType = -1;
+    int arg = -1;
 
     //Define the options
     while ((choice = getopt(argc, argv, ":i:m")) != -1)
@@ -114,11 +115,11 @@ int main(int argc, char **argv)
         switch (choice)
         {
         case 'i':
-            int arg = atoi(optarg);
+            arg = atoi(optarg);
             id = arg;
             break;
         case 'm':
-            int arg = atoi(optarg);
+            arg = atoi(optarg);
             msgType = arg;
             break;
         case '?':
