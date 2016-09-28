@@ -134,7 +134,7 @@ int main(int argc, char **argv)
         // }
 
         //return 0 if everything went good, 2 otherwise
-        if (counter < 5)
+        if (numtries < 5)
             return 0;
         else
             return 2;
