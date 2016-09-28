@@ -53,12 +53,10 @@ typedef struct
 {
     int id;
     int action;
-}
-Packet;
+} Packet;
 
 bool listenForACK()
 {
-    Packet packet;
     //Listen for ACK
     radio.startListening();
     //Let's take the time while we listen
@@ -82,6 +80,7 @@ bool listenForACK()
     else
     {
         //If we received the message in time, let's read it and print it
+        Packet packet;
         radio.read(&packet, sizeof(packet));
         printf("Yay! Got this response %s from: 0x%" PRIx64 ".\n\r", packet.action, pipes[packet.id]);
         // printf("Got response from: 0x%" PRIx64 "!!!!\n\r", pipes[got_message]);
