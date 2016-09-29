@@ -192,6 +192,11 @@ int main(int argc, char **argv)
         usleep(10);
     }
 
+    if (success)
+        return 2;
+    else
+        return 0;
+
     // printf("dflag = %d, tflag = %d, cvalue = %s\n", dflag, tflag, cvalue);
     // printf("dvalue = %d, tvalue = %d, cvalue = %s\n", dvalue, tvalue, cvalue);
 
@@ -200,5 +205,5 @@ int main(int argc, char **argv)
     //     printf("Non-option argument %s\n", argv[index]);
     // }
 
-    return 0;
+    // return 0;
 }
