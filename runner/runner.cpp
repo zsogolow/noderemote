@@ -210,6 +210,8 @@ int main(int argc, char **argv)
         {
             loop();
         }
+
+        return 0;
     }
 
     // printf("dflag = %d, tflag = %d, cvalue = %s\n", dflag, tflag, cvalue);

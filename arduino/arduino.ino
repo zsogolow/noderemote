@@ -62,9 +62,7 @@ void loop(void)
     {
         // Dump the payloads until we've gotten everything
         unsigned short message;
-        bool done;
 
-        done = false;
         while (radio.available())
         {
             // Fetch the payload, and see if this was the last one.
