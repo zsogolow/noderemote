@@ -9,7 +9,7 @@
 #include <RF24/RF24.h>
 #include <inttypes.h>
 #include <string>
-#include <common/noderemote.h>
+#include "common/noderemote.h"
 
 using namespace std;
 //RF24 radio("/dev/spidev0.0",8000000 , 25);
@@ -43,12 +43,7 @@ void setup(void)
     radio.printDetails();
 }
 
-<<<<<<< HEAD
 // #define PING 1
-=======
-#define DEBUG false
-#define PING 1
->>>>>>> 0d841dcbca759866099882aac272af1f4caff7cc
 
 // struct Packet
 // {
