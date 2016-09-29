@@ -111,6 +111,7 @@ bool send(int id, int action, char *msg)
     }
 }
 
+Packet packet;
 void loop()
 {
     // if there is data ready
