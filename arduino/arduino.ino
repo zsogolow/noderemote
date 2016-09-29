@@ -2,29 +2,12 @@
 #include "nRF24L01.h"
 #include "RF24.h"
 #include "printf.h"
+#include "noderemote.h"
 
 // Set up nRF24L01 radio on SPI bus plus pins 9 & 10
 RF24 radio(9, 10);
 
-// Radio pipe addresses for the 2 nodes to communicate.
-const uint64_t pipes[6] = {
-    0x7878787878LL,
-    0xB3B4B5B6F1LL,
-    0xB3B4B5B6CDLL,
-    0xB3B4B5B6A3LL,
-    0xB3B4B5B60FLL,
-    0xB3B4B5B605LL,
-};
-
-struct Packet
-{
-    uint8_t id;
-    uint8_t action;
-};
-
 #define ID 1
-#define PING 1
-
 void setup(void)
 {
     Serial.begin(9600);

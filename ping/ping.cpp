@@ -9,6 +9,7 @@
 #include <RF24/RF24.h>
 #include <inttypes.h>
 #include <string>
+#include <common/noderemote.h>
 
 using namespace std;
 //RF24 radio("/dev/spidev0.0",8000000 , 25);
@@ -16,14 +17,14 @@ using namespace std;
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 
-const uint64_t pipes[6] = {
-    0x7878787878LL,
-    0xB3B4B5B6F1LL,
-    0xB3B4B5B6CDLL,
-    0xB3B4B5B6A3LL,
-    0xB3B4B5B60FLL,
-    0xB3B4B5B605LL,
-};
+// const uint64_t pipes[6] = {
+//     0x7878787878LL,
+//     0xB3B4B5B6F1LL,
+//     0xB3B4B5B6CDLL,
+//     0xB3B4B5B6A3LL,
+//     0xB3B4B5B60FLL,
+//     0xB3B4B5B605LL,
+// };
 
 void setup(void)
 {
@@ -42,13 +43,13 @@ void setup(void)
     radio.printDetails();
 }
 
-#define PING 1
+// #define PING 1
 
-struct Packet
-{
-    uint8_t id;
-    uint8_t action;
-};
+// struct Packet
+// {
+//     uint8_t id;
+//     uint8_t action;
+// };
 
 bool listenForACK()
 {
