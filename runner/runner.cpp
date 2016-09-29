@@ -130,19 +130,6 @@ void loop()
             // Spew it
             printf("%d", packet.action);
 
-            Packet cb;
-            switch (packet.action)
-            {
-            case PING:
-                cb = handlePing(packet);
-                break;
-            default:
-                cb = handleAction(packet);
-                break;
-            }
-
-            sendCallback(cb);
-
             usleep(10);
         }
     }
