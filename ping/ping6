@@ -7,7 +7,7 @@ while [  $COUNTER -lt 7 ]; do
     sudo ./ping -d $COUNTER -t 1
     LAST=$?;
     echo LAST
-    if [ LAST -eq 0 ]; then
+    if [ $LAST -eq 0 ]; then
         INDEX=COUNTER-1;
         DUINOS[$INDEX]=1;
         echo 'yay'
