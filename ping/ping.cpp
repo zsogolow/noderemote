@@ -9,7 +9,7 @@
 #include <RF24/RF24.h>
 #include <inttypes.h>
 #include <string>
-#include "common/noderemote.h"
+#include <noderemote.h>
 
 using namespace std;
 //RF24 radio("/dev/spidev0.0",8000000 , 25);
