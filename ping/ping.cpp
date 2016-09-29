@@ -43,13 +43,20 @@ void setup(void)
     radio.printDetails();
 }
 
+<<<<<<< HEAD
 // #define PING 1
+=======
+#define DEBUG false
+#define PING 1
+>>>>>>> 0d841dcbca759866099882aac272af1f4caff7cc
 
 // struct Packet
 // {
 //     uint8_t id;
 //     uint8_t action;
 // };
+
+Packet ack;
 
 bool listenForACK()
 {
@@ -76,9 +83,8 @@ bool listenForACK()
     else
     {
         //If we received the message in time, let's read it and print it
-        Packet packet;
-        radio.read(&packet, sizeof(packet));
-        printf("Yay! Got action %u from: 0x%" PRIx64 " (%u).\n\r", packet.action, pipes[packet.id], packet.id);
+        radio.read(&ack, sizeof(ack));
+        printf("Yay! Got action %u from: 0x%" PRIx64 " (%u).\n\r", ack.action, pipes[ack.id], ack.id);
         return true;
     }
 }
@@ -125,10 +131,8 @@ bool send(int id, int action, char *msg)
     {
     case PING:
         return sendPing(id);
-        break;
     default:
         return sendAction(id, action);
-        return false;
     }
 }
 
@@ -194,6 +198,11 @@ int main(int argc, char **argv)
         usleep(10);
     }
 
+    if (success == true)
+        return 0;
+    else
+        return 1;
+
     // printf("dflag = %d, tflag = %d, cvalue = %s\n", dflag, tflag, cvalue);
     // printf("dvalue = %d, tvalue = %d, cvalue = %s\n", dvalue, tvalue, cvalue);
 
@@ -202,5 +211,5 @@ int main(int argc, char **argv)
     //     printf("Non-option argument %s\n", argv[index]);
     // }
 
-    return 0;
+    // return 0;
 }
