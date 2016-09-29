@@ -43,14 +43,6 @@ void sendCallback(Packet callback)
     radio.startListening();
 }
 
-Packet handlePing(Packet packet)
-{
-    Packet pong;
-    pong.id = packet.id;
-    pong.action = packet.action;
-    return pong;
-}
-
 Packet handleAction(Packet packet)
 {
     Packet handled;
@@ -78,7 +70,7 @@ void loop(void)
             timePassed = true;
         }
     }
-    
+
     // if there is data ready
     if (radio.available())
     {
@@ -96,16 +88,8 @@ void loop(void)
 
             Packet cb;
 
-            switch (packet.action)
-            {
-            case PING:
-                cb = handlePing(packet);
-                break;
-            default:
-                cb = handleAction(packet);
-                break;
-            }
-
+            cb = handleAction(packet);
+            
             sendCallback(cb);
 
             delay(10);
