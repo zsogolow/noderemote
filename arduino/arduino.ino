@@ -8,6 +8,7 @@
 RF24 radio(9, 10);
 
 #define ID 1
+
 void setup(void)
 {
     Serial.begin(9600);

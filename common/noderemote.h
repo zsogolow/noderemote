@@ -18,3 +18,4 @@ struct Packet
 };
 
 #define PING 1
+#define HEARTBEAT 2
