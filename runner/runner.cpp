@@ -35,7 +35,7 @@ void setup(void)
 }
 
 Packet ack; // issue with radio library, hack to workaround segfault
-bool listenForACK()
+bool listenForACK(int action)
 {
     //Listen for ACK
     radio.startListening();
@@ -61,8 +61,15 @@ bool listenForACK()
     {
         //If we received the message in time, let's read it and print it
         radio.read(&ack, sizeof(ack));
-        printf("Yay! Got action %u from: 0x%" PRIx64 " (%u).\n\r", ack.action, pipes[ack.id], ack.id);
-        return true;
+        if (ack.action == action)
+        {
+            printf("Yay! Got action %u from: 0x%" PRIx64 " (%u).\n\r", ack.action, pipes[ack.id], ack.id);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 
