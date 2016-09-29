@@ -1,13 +1,13 @@
 #!/bin/bash 
 COUNTER=1
-declare -a DUINOS=(0,0,0,0,0,0);
+declare -a DUINOS=(1,1,1,1,1,1);
 
 while [  $COUNTER -lt 7 ]; do
     echo The counter is $COUNTER
     sudo ./ping -d $COUNTER -t 1
-    if [ $? -eq 0 ]; then
+    if [ $? -ne 0 ]; then
         INDEX=COUNTER-1;
-        DUINOS[$INDEX]=1;
+        DUINOS[$INDEX]=0;
         echo 'yay'
     fi
     let COUNTER=COUNTER+1 
