@@ -114,6 +114,7 @@ bool send(int id, int action, char *msg)
 Packet packet;
 void loop()
 {
+    printf("looping");
     // if there is data ready
     if (radio.available())
     {
