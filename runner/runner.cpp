@@ -129,7 +129,7 @@ bool send(int id, int action, char *msg)
 
     radio.openWritingPipe(pipes[id]);
 
-    sendAction(id, action);
+    return sendAction(id, action);
 }
 
 void loop()
