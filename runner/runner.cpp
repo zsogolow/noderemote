@@ -66,6 +66,39 @@ bool listenForACK()
     }
 }
 
+Packet heard;
+Packet listenForPackets()
+{
+    //Listen for ACK
+    radio.startListening();
+    //Let's take the time while we listen
+    unsigned long started_waiting_at = millis();
+    bool timeout = false;
+    while (!radio.available() && !timeout)
+    {
+        //printf("%d", !radio.available());
+        if (millis() - started_waiting_at > 1000)
+        {
+            timeout = true;
+        }
+    }
+
+    if (timeout)
+    {
+        Packet empty;
+        empty.id = -1;
+        empty.action = EMPTY;
+        return empty;
+    }
+    else
+    {
+        //If we received the message in time, let's read it and print it
+        radio.read(&heard, sizeof(heard));
+        printf("Yay! Got action %u from: 0x%" PRIx64 " (%u).\n\r", heard.action, pipes[heard.id], heard.id);
+        return true;
+    }
+}
+
 bool sendPing(int id)
 {
     Packet packet;
@@ -115,7 +148,7 @@ bool send(int id, int action, char *msg)
 
 void loop()
 {
-    listenForACK();
+    listenForPackets();
 }
 
 int main(int argc, char **argv)

@@ -73,11 +73,12 @@ void loop(void)
     }
     else
     {
-        if (time + 3000 < now)
+        if (time + 10000 < now)
         {
             timePassed = true;
         }
     }
+    
     // if there is data ready
     if (radio.available())
     {
