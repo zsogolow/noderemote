@@ -95,7 +95,7 @@ Packet listenForPackets()
         //If we received the message in time, let's read it and print it
         radio.read(&heard, sizeof(heard));
         printf("Yay! Got action %u from: 0x%" PRIx64 " (%u).\n\r", heard.action, pipes[heard.id], heard.id);
-        return true;
+        return heard;
     }
 }
 
