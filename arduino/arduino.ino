@@ -9,11 +9,15 @@ RF24 radio(9, 10);
 
 #define ID 1
 
+unsigned long time;
+
 void setup(void)
 {
     Serial.begin(9600);
     printf_begin();
     printf("\nRemote Switch Arduino\n\r");
+
+    time = millis();
 
     // Setup and configure rf radio
     radio.begin();
@@ -57,6 +61,23 @@ Packet handleAction(Packet packet)
 
 void loop(void)
 {
+    unsigned long now = millis();
+    if (timePassed)
+    {
+        Packet packet;
+        packet.id = ID;
+        packet.action = HEARTBEAT;
+        sendCallback(packet);
+        time = millis();
+        timePassed = false;
+    }
+    else
+    {
+        if (time + 3000 < now)
+        {
+            timePassed = true;
+        }
+    }
     // if there is data ready
     if (radio.available())
     {

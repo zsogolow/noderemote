@@ -29,6 +29,8 @@ void setup(void)
     radio.openReadingPipe(4, pipes[4]);
     radio.openReadingPipe(5, pipes[5]);
 
+    radio.startListening();
+
     radio.printDetails();
 }
 
@@ -111,29 +113,9 @@ bool send(int id, int action, char *msg)
     }
 }
 
-Packet packet;
 void loop()
 {
-    printf("looping");
-    // if there is data ready
-    if (radio.available())
-    {
-        // Dump the payloads until we've gotten everything
-        unsigned short message;
-        bool done;
-
-        done = false;
-        while (radio.available())
-        {
-            // Fetch the payload, and see if this was the last one.
-            radio.read(&packet, sizeof(packet));
-
-            // Spew it
-            printf("%d", packet.action);
-
-            usleep(10);
-        }
-    }
+    listenForACK();
 }
 
 int main(int argc, char **argv)
@@ -207,7 +189,6 @@ int main(int argc, char **argv)
     }
     else if (tvalue == HEARTBEAT)
     {
-        radio.startListening();
         while (true)
         {
             loop();
