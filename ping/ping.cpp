@@ -193,7 +193,6 @@ int main(int argc, char **argv)
     }
 
     if (success == true)
-        printf("bitch");
         return 0;
     else
         return 1;
