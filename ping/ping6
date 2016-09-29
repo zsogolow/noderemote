@@ -5,9 +5,9 @@ declare -a DUINOS=(0,0,0,0,0,0);
 while [  $COUNTER -lt 7 ]; do
     echo The counter is $COUNTER
     sudo ./ping -d $COUNTER -t 1
-    echo $?
     if [ $? -eq 0 ]; then
-        DUINOS[$COUNTER - 1]=1;
+        INDEX=COUNTER-1;
+        DUINOS[$INDEX]=1;
         echo 'yay'
     fi
     let COUNTER=COUNTER+1 
