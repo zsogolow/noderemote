@@ -192,7 +192,8 @@ int main(int argc, char **argv)
         usleep(10);
     }
 
-    if (success)
+    if (success == true)
+        printf("bitch");
         return 0;
     else
         return 1;
