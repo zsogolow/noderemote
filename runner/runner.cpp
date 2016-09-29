@@ -128,7 +128,7 @@ void loop()
             radio.read(&packet, sizeof(packet));
 
             // Spew it
-            Serial.println(packet.action);
+            printf("%d", packet.action);
 
             Packet cb;
             switch (packet.action)
