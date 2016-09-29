@@ -20,7 +20,7 @@ CCFLAGS=-Ofast -mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
 # define all programs
 #PROGRAMS = scanner pingtest gettingstarted
 PROGRAMS = ping
-DEPS = ../common/noderemote.h
+DEPS = ../common/
 SOURCES = ${PROGRAMS:=.cpp}
 
 all: ${PROGRAMS}
