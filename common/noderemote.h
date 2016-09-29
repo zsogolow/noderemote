@@ -1,3 +1,6 @@
+#include <inttypes.h>
+#include <stdlib.h>
+
 // Radio pipe addresses for the 2 nodes to communicate.
 const uint64_t pipes[6] = {
     0x7878787878LL,
