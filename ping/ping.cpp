@@ -42,6 +42,7 @@ void setup(void)
     radio.printDetails();
 }
 
+#define DEBUG false
 #define PING 1
 
 struct Packet
@@ -124,10 +125,8 @@ bool send(int id, int action, char *msg)
     {
     case PING:
         return sendPing(id);
-        break;
     default:
         return sendAction(id, action);
-        return false;
     }
 }
 
