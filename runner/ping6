@@ -1,0 +1,21 @@
+#!/bin/bash 
+COUNTER=1
+declare -a DUINOS=(0,0,0,0,0,0);
+
+while [  $COUNTER -lt 7 ]; do
+    echo The counter is $COUNTER
+    sudo ./runner -d $COUNTER -t 1
+    LAST=$?
+    if [ $LAST -eq 0 ]; then
+        INDEX=COUNTER-1
+        DUINOS[$INDEX]=1
+    fi
+
+    if [ $LAST -ne 0 ]; then
+        INDEX=COUNTER-1
+        DUINOS[$INDEX]=0
+    fi
+    let COUNTER=COUNTER+1 
+done
+
+echo ${DUINOS[@]}
