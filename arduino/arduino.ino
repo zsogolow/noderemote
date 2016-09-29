@@ -9,6 +9,7 @@ RF24 radio(9, 10);
 
 #define ID 1
 
+boolean timePassed;
 unsigned long time;
 
 void setup(void)
@@ -89,7 +90,7 @@ void loop(void)
             Packet cb;
 
             cb = handleAction(packet);
-            
+
             sendCallback(cb);
 
             delay(10);
