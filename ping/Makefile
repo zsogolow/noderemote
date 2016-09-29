@@ -25,8 +25,8 @@ SOURCES = ${PROGRAMS:=.cpp}
 
 all: ${PROGRAMS}
 
-${PROGRAMS}: ${SOURCES} ${DEPS}
-	g++ ${CCFLAGS} -Wall -I./RF24/RPi/RF24/ -lrf24-bcm $@.cpp -o $@
+${PROGRAMS}: ${SOURCES}
+	g++ ${CCFLAGS} -Wall -I./RF24/RPi/RF24/ ${DEPS} -lrf24-bcm $@.cpp -o $@
 
 clean:
 	rm -rf $(PROGRAMS)
