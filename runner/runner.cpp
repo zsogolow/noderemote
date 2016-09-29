@@ -206,6 +206,7 @@ int main(int argc, char **argv)
     }
     else if (tvalue == HEARTBEAT)
     {
+        radio.startListening();
         while (true)
         {
             loop();
