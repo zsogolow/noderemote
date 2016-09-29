@@ -124,7 +124,6 @@ void loop()
         while (radio.available())
         {
             // Fetch the payload, and see if this was the last one.
-            Packet packet;
             radio.read(&packet, sizeof(packet));
 
             // Spew it
