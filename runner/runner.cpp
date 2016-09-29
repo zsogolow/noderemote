@@ -106,21 +106,6 @@ Packet listenForPackets()
     }
 }
 
-bool sendPing(int id)
-{
-    Packet packet;
-    packet.id = id;
-    packet.action = PING;
-
-    bool ok = radio.write(&packet, sizeof(packet));
-    if (!ok)
-        printf("failed...\n\r");
-    else
-        printf("ok!\n\r");
-
-    return listenForACK();
-}
-
 bool sendAction(int id, int action)
 {
     Packet packet;
@@ -133,7 +118,7 @@ bool sendAction(int id, int action)
     else
         printf("ok!\n\r");
 
-    return listenForACK();
+    return listenForACK(action);
 }
 
 bool send(int id, int action, char *msg)
@@ -144,13 +129,7 @@ bool send(int id, int action, char *msg)
 
     radio.openWritingPipe(pipes[id]);
 
-    switch (action)
-    {
-    case PING:
-        return sendPing(id);
-    default:
-        return sendAction(id, action);
-    }
+    sendAction(id, action);
 }
 
 void loop()
