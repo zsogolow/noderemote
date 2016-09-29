@@ -3,7 +3,7 @@ COUNTER=1
 while [  $COUNTER -lt 7 ]; do
     echo The counter is $COUNTER
     sudo ./ping -d $COUNTER -t 1
-    if [ $? -eq 0 ]; then
+    if [ $? -eq 1 ]; then
         echo 'yay'
     fi
     let COUNTER=COUNTER+1 

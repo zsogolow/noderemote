@@ -193,9 +193,9 @@ int main(int argc, char **argv)
     }
 
     if (success)
-        return 2;
-    else
         return 0;
+    else
+        return 1;
 
     // printf("dflag = %d, tflag = %d, cvalue = %s\n", dflag, tflag, cvalue);
     // printf("dvalue = %d, tvalue = %d, cvalue = %s\n", dvalue, tvalue, cvalue);
