@@ -282,8 +282,6 @@ int main(int argc, char **argv)
             loop();
         }
 
-        t1.join();
-
         return 0;
     }
 
