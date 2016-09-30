@@ -276,7 +276,7 @@ int main(int argc, char **argv)
     else if (tvalue == HEARTBEAT)
     {
         thread t1(socketServer);
-
+        t1.join();
         while (true)
         {
             loop();
