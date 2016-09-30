@@ -47,6 +47,13 @@ void sendCallback(Packet callback)
     radio.startListening();
 }
 
+void blink(int pin, long duration)
+{
+    digitalWrite(pin, HIGH); // turn the LED on (HIGH is the voltage level)
+    delay(duration);         // wait for a second
+    digitalWrite(pin, LOW);  // turn the LED off by making the voltage LOW
+}
+
 Packet handleAction(Packet packet)
 {
     Packet handled;
@@ -54,9 +61,7 @@ Packet handleAction(Packet packet)
     switch (packet.action)
     {
     case BLINK:
-        digitalWrite(blinkPin, HIGH); // turn the LED on (HIGH is the voltage level)
-        delay(1000);                  // wait for a second
-        digitalWrite(blinkPin, LOW);  // turn the LED off by making the voltage LOW
+        blink(blinkPin, 1000);
         break;
     default:
         break;
@@ -75,6 +80,7 @@ void loop(void)
         Packet packet;
         packet.id = ID;
         packet.action = HEARTBEAT;
+        blink(blinkPin, 10);
         sendCallback(packet);
         time = millis();
         timePassed = false;
