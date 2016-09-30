@@ -8,7 +8,7 @@
 RF24 radio(9, 10);
 
 #define ID 1
-int blinkPin = 13;
+int blinkPin = 8;
 
 boolean timePassed;
 unsigned long time;
