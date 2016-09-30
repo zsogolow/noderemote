@@ -147,7 +147,7 @@ void socketServer()
     char buf[100];
     int fd, cl, rc;
 
-    fprint("hi");
+    printf("hi");
 
     if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
     {
