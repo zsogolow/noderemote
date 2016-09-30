@@ -280,12 +280,12 @@ int main(int argc, char **argv)
         thread t1(socketServer);
         t1.detach();
 
-        while (true)
-        {
-            loop();
-        }
+        // while (true)
+        // {
+        //     loop();
+        // }
 
-        return 0;
+        // return 0;
     }
 
     // printf("dflag = %d, tflag = %d, cvalue = %s\n", dflag, tflag, cvalue);
