@@ -8,6 +8,7 @@
 RF24 radio(9, 10);
 
 #define ID 1
+int blinkPin = 13;
 
 boolean timePassed;
 unsigned long time;
@@ -17,6 +18,8 @@ void setup(void)
     Serial.begin(9600);
     printf_begin();
     printf("\nRemote Switch Arduino\n\r");
+
+    pinMode(blinkPin, OUTPUT);
 
     time = millis();
 
@@ -47,6 +50,18 @@ void sendCallback(Packet callback)
 Packet handleAction(Packet packet)
 {
     Packet handled;
+
+    switch (packet.action)
+    {
+    case BLINK:
+        digitalWrite(blinkPin, HIGH); // turn the LED on (HIGH is the voltage level)
+        delay(1000);                  // wait for a second
+        digitalWrite(blinkPin, LOW);  // turn the LED off by making the voltage LOW
+        break;
+    default:
+        break;
+    }
+
     handled.id = packet.id;
     handled.action = packet.action;
     return handled;

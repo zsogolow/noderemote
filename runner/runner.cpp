@@ -192,7 +192,7 @@ int main(int argc, char **argv)
     int maxtries = 5;
     int numtries = 0;
 
-    if (tvalue == PING)
+    if (tvalue == PING || tvalue == BLINK)
     {
         while (success == false && numtries < maxtries)
         {

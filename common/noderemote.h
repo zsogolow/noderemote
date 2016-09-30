@@ -20,3 +20,4 @@ struct Packet
 #define EMPTY -1
 #define PING 1
 #define HEARTBEAT 2
+#define BLINK 3
