@@ -275,7 +275,7 @@ int main(int argc, char **argv)
     }
     else if (tvalue == HEARTBEAT)
     {
-        thread t1(socketServer, void);
+        thread t1(socketServer);
 
         while (true)
         {
