@@ -147,6 +147,8 @@ void socketServer()
     char buf[100];
     int fd, cl, rc;
 
+    fprint("hi");
+
     if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
     {
         perror("socket error");
@@ -277,6 +279,7 @@ int main(int argc, char **argv)
     {
         thread t1(socketServer);
         t1.join();
+
         while (true)
         {
             loop();
