@@ -15,9 +15,13 @@ struct Packet
 {
     uint8_t id;
     uint8_t action;
+    uint8_t extra;
 };
 
 #define EMPTY -1
 #define PING 1
 #define HEARTBEAT 2
 #define BLINK 3
+#define RELAY_STATE 4
+#define RELAY_ON 5
+#define RELAY_OFF 6

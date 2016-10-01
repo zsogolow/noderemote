@@ -9,6 +9,7 @@ RF24 radio(9, 10);
 
 #define ID 1
 int blinkPin = 8;
+int relayPin = 7;
 
 boolean timePassed;
 unsigned long time;
@@ -20,6 +21,8 @@ void setup(void)
     printf("\nRemote Switch Arduino\n\r");
 
     pinMode(blinkPin, OUTPUT);
+    pinMode(relayPin, OUTPUT);
+    digitalWrite(relayPin, HIGH);
 
     time = millis();
 
@@ -54,21 +57,52 @@ void blink(int pin, long duration)
     digitalWrite(pin, LOW);  // turn the LED off by making the voltage LOW
 }
 
+int getRelayState()
+{
+    boolean state = digitalRead(relayPin);
+    return state == true ? 0 : 1;
+}
+
+void switchRelay(int state)
+{
+    if (state == 0)
+    {
+        // off
+        digitalWrite(relayPin, HIGH);
+    }
+    else if (state == 1)
+    {
+        // on
+        digitalWrite(relayPin, LOW);
+    }
+}
+
 Packet handleAction(Packet packet)
 {
     Packet handled;
+    handled.id = packet.id;
+    handled.action = packet.action;
 
     switch (packet.action)
     {
     case BLINK:
         blink(blinkPin, 1000);
         break;
+    case RELAY_STATE:
+        handled.extra = getRelayState();
+        break;
+    case RELAY_ON:
+        // turn on relay
+        handled.extra = getRelayState();
+        break;
+    case RELAY_OFF:
+        // turn on relay
+        handled.extra = getRelayState();
+        break;
     default:
         break;
     }
 
-    handled.id = packet.id;
-    handled.action = packet.action;
     return handled;
 }
 
