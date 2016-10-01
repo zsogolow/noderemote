@@ -18,7 +18,7 @@ RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 void setup(void)
 {
     //Prepare the radio module
-    printf("\nPreparing interface\n");
+    fprintf(stderr, "\nPreparing interface\n");
     radio.begin();
     radio.setRetries(15, 15);
 
@@ -31,7 +31,7 @@ void setup(void)
 
     radio.startListening();
 
-    radio.printDetails();
+    // radio.printDetails();
 }
 
 Packet ack; // issue with radio library, hack to workaround segfault
@@ -54,7 +54,7 @@ bool listenForACK(int action)
     if (timeout)
     {
         //If we waited too long the transmission failed
-        printf("Oh gosh, it's not giving me any response...\n\r");
+        fprintf(stderr, "Oh gosh, it's not giving me any response...\n\r");
         return false;
     }
     else
@@ -63,7 +63,8 @@ bool listenForACK(int action)
         radio.read(&ack, sizeof(ack));
         if (ack.action == action)
         {
-            printf("Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", ack.action, pipes[ack.id], ack.id, ack.extra);
+            printf("%u", ack.extra);
+            fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", ack.action, pipes[ack.id], ack.id, ack.extra);
             return true;
         }
         else
@@ -101,7 +102,8 @@ Packet listenForPackets()
     {
         //If we received the message in time, let's read it and print it
         radio.read(&heard, sizeof(heard));
-        printf("Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", heard.action, pipes[heard.id], heard.id, heard.extra);
+        printf("%u", heard.extra);
+        fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", heard.action, pipes[heard.id], heard.id, heard.extra);
         return heard;
     }
 }
@@ -114,9 +116,9 @@ bool sendAction(int id, int action)
 
     bool ok = radio.write(&packet, sizeof(packet));
     if (!ok)
-        printf("failed...\n\r");
+        fprintf(stderr, "failed...\n\r");
     else
-        printf("ok!\n\r");
+        fprintf(stderr, "ok!\n\r");
 
     return listenForACK(action);
 }
