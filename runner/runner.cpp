@@ -192,7 +192,7 @@ int main(int argc, char **argv)
     int maxtries = 5;
     int numtries = 0;
 
-    if (tvalue == PING || tvalue == BLINK)
+    if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
     {
         while (success == false && numtries < maxtries)
         {
