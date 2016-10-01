@@ -60,7 +60,7 @@ void blink(int pin, long duration)
 int getRelayState()
 {
     boolean state = digitalRead(relayPin);
-    return state == true ? 0 : 1;
+    return state == true ? 1 : 0;
 }
 
 void switchRelay(int state)
@@ -68,12 +68,12 @@ void switchRelay(int state)
     if (state == 0)
     {
         // off
-        digitalWrite(relayPin, HIGH);
+        digitalWrite(relayPin, LOW);
     }
     else if (state == 1)
     {
         // on
-        digitalWrite(relayPin, LOW);
+        digitalWrite(relayPin, HIGH);
     }
 }
 
@@ -93,10 +93,12 @@ Packet handleAction(Packet packet)
         break;
     case RELAY_ON:
         // turn on relay
+        switchRelay(1);
         handled.extra = getRelayState();
         break;
     case RELAY_OFF:
-        // turn on relay
+        // turn off relay
+        switchRelay(0);
         handled.extra = getRelayState();
         break;
     default:
