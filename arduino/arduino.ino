@@ -22,7 +22,7 @@ void setup(void)
 
     pinMode(blinkPin, OUTPUT);
     pinMode(relayPin, OUTPUT);
-    digitalWrite(relayPin, HIGH);
+    digitalWrite(relayPin, LOW);
 
     time = millis();
 
