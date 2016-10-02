@@ -55,7 +55,7 @@ bool listenForACK(int action, int attempt)
 
     if (timeout)
     {
-        if (attempt == 5)
+        if (attempt == 4)
         {
             printf("%u", 0);
         }
