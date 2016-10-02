@@ -164,7 +164,7 @@ void loop()
         pack = listenForPackets();
         buf[0] = pack.type;
         buf[1] = pack.id;
-        if (pack.id > 0)
+        if (pack.id > 0 && pack.action == HEARTBEAT)
         {
             write(fd, buf, 2);
         }
