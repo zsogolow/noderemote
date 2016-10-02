@@ -37,7 +37,7 @@ void setup(void)
 }
 
 Packet ack; // issue with radio library, hack to workaround segfault
-bool listenForACK(int action)
+bool listenForACK(int action, int attempt)
 {
     //Listen for ACK
     radio.startListening();
@@ -55,6 +55,10 @@ bool listenForACK(int action)
 
     if (timeout)
     {
+        if (attempt == 5)
+        {
+            printf("%u", 0);
+        }
         //If we waited too long the transmission failed
         fprintf(stderr, "Oh gosh, it's not giving me any response...\n\r");
         return false;
@@ -92,7 +96,7 @@ Packet listenForPackets()
             timeout = true;
         }
     }
-        
+
     if (timeout)
     {
         Packet empty;
@@ -109,7 +113,7 @@ Packet listenForPackets()
     }
 }
 
-bool sendAction(int id, int action)
+bool sendAction(int id, int action, int attempt)
 {
     Packet packet;
     packet.id = id;
@@ -121,10 +125,10 @@ bool sendAction(int id, int action)
     else
         fprintf(stderr, "ok!\n\r");
 
-    return listenForACK(action);
+    return listenForACK(action, attempt);
 }
 
-bool send(int id, int action, char *msg)
+bool send(int id, int action, int attempt)
 {
     //Returns true if ACK package is received
     //Stop listening
@@ -132,7 +136,7 @@ bool send(int id, int action, char *msg)
 
     radio.openWritingPipe(pipes[id]);
 
-    return sendAction(id, action);
+    return sendAction(id, action, attempt);
 }
 
 char *socket_path = "/tmp/hidden";
@@ -222,14 +226,13 @@ int main(int argc, char **argv)
     setup();
 
     bool success = false;
-    int maxtries = 5;
     int numtries = 0;
 
     if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
     {
-        while (success == false && numtries < maxtries)
+        while (success == false && numtries < 5)
         {
-            success = send(dvalue, tvalue, cvalue);
+            success = send(dvalue, tvalue, cvalue, numtries);
             numtries++;
             usleep(10);
         }
