@@ -82,6 +82,7 @@ Packet handleAction(Packet packet)
     Packet handled;
     handled.id = packet.id;
     handled.action = packet.action;
+    handled.extra = packet.id;
 
     switch (packet.action)
     {
