@@ -101,7 +101,7 @@ Packet listenForPackets()
         Packet empty;
         empty.id = -1;
         empty.action = EMPTY;
-        fprintf("ad%u", empty.id);
+        printf("ad %u", empty.id);
         return empty;
     }
     else
