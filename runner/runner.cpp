@@ -163,10 +163,10 @@ void loop()
 
     while (true)
     {
-        Packet heard;
-        heard = listenForPackets();
-        buf[0] = heard.id;
-        if (heard.id > 0)
+        Packet black;
+        black = listenForPackets();
+        buf[0] = black.id;
+        if (black.id > 0)
         {
             write(fd, buf, 1);
         }
