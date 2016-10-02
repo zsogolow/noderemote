@@ -128,7 +128,7 @@ bool sendAction(int id, int action, int attempt)
     return listenForACK(action, attempt);
 }
 
-bool send(int id, int action, int attempt)
+bool send(int id, int action, char *msg, int attempt)
 {
     //Returns true if ACK package is received
     //Stop listening
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
 
     if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
     {
-        while (success == false && numtries < 5)
+        while (success == false && numtries < maxtries)
         {
             success = send(dvalue, tvalue, cvalue, numtries);
             numtries++;
