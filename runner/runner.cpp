@@ -10,6 +10,8 @@
 #include <inttypes.h>
 #include <string>
 #include <noderemote.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 
 using namespace std;
 
@@ -77,6 +79,8 @@ bool listenForACK(int action)
 Packet heard;
 Packet listenForPackets()
 {
+    printf("%u", 0);
+
     //Listen for ACK
     radio.startListening();
     //Let's take the time while we listen
@@ -134,9 +138,39 @@ bool send(int id, int action, char *msg)
     return sendAction(id, action);
 }
 
+char *socket_path = "/tmp/hidden";
 void loop()
 {
-    listenForPackets();
+    struct sockaddr_un addr;
+    char buf[100];
+    int fd, rc;
+    if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
+    {
+        perror("socket error");
+        exit(-1);
+    }
+
+    memset(&addr, 0, sizeof(addr));
+    addr.sun_family = AF_UNIX;
+
+    strncpy(addr.sun_path, socket_path, sizeof(addr.sun_path) - 1);
+
+    if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
+    {
+        perror("connect error");
+        exit(-1);
+    }
+
+    while (true)
+    {
+        Packet heard;
+        heard = listenForPackets();
+        buf[0] = heard.id;
+        if (heard.id > 0)
+        {
+            write(fd, buf, 1);
+        }
+    }
 }
 
 int main(int argc, char **argv)
@@ -210,11 +244,7 @@ int main(int argc, char **argv)
     }
     else if (tvalue == HEARTBEAT)
     {
-        while (true)
-        {
-            loop();
-        }
-
+        loop();
         return 0;
     }
 
