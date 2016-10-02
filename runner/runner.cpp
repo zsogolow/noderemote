@@ -162,10 +162,11 @@ void loop()
     {
         Packet black;
         black = listenForPackets();
-        buf[0] = black.id;
+        buf[0] = black.type;
+        buf[1] = black.id;
         if (black.id > 0)
         {
-            write(fd, buf, 1);
+            write(fd, buf, 2);
         }
     }
 }

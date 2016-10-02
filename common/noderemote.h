@@ -16,7 +16,11 @@ struct Packet
     uint8_t id;
     uint8_t action;
     uint8_t extra;
+    uint8_t type;
 };
+
+#define GENERAL_DUINO 21
+#define RELAY_DUINO 22
 
 #define EMPTY -1
 #define PING 1
