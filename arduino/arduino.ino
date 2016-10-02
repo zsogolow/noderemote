@@ -8,6 +8,8 @@
 RF24 radio(9, 10);
 
 #define ID 1
+
+int duty = RELAY_DUINO;
 int blinkPin = 8;
 int relayPin = 7;
 
@@ -83,7 +85,7 @@ Packet handleAction(Packet packet)
     handled.id = packet.id;
     handled.action = packet.action;
     handled.extra = packet.id;
-
+        
     switch (packet.action)
     {
     case BLINK:
@@ -117,6 +119,7 @@ void loop(void)
         Packet packet;
         packet.id = ID;
         packet.action = HEARTBEAT;
+        packet.type = duty;
         blink(blinkPin, 10);
         sendCallback(packet);
         time = millis();

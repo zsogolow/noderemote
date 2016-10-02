@@ -160,11 +160,11 @@ void loop()
 
     while (true)
     {
-        Packet black;
-        black = listenForPackets();
-        buf[0] = black.type;
-        buf[1] = black.id;
-        if (black.id > 0)
+        Packet pack;
+        pack = listenForPackets();
+        buf[0] = pack.type;
+        buf[1] = pack.id;
+        if (pack.id > 0)
         {
             write(fd, buf, 2);
         }
