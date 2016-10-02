@@ -230,7 +230,7 @@ int main(int argc, char **argv)
 
     if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
     {
-        while (success == false && numtries < maxtries)
+        while (success == false && numtries < 5)
         {
             success = send(dvalue, tvalue, cvalue, numtries);
             numtries++;
