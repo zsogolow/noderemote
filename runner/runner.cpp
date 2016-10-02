@@ -79,8 +79,6 @@ bool listenForACK(int action)
 Packet heard;
 Packet listenForPackets()
 {
-    printf("%u", 0);
-
     //Listen for ACK
     radio.startListening();
     //Let's take the time while we listen
@@ -95,21 +93,19 @@ Packet listenForPackets()
         }
     }
         
-    fprintf(stderr,"why???");
-    
     if (timeout)
     {
         Packet empty;
-        empty.id = -1;
+        empty.id = 0;
         empty.action = EMPTY;
-        printf("ad %u", empty.id);
+        fprintf(stderr, "%u", empty.id);
         return empty;
     }
     else
     {
         //If we received the message in time, let's read it and print it
         radio.read(&heard, sizeof(heard));
-        printf("extra %u", heard.extra);
+        fprintf(stderr,"extra %u", heard.extra);
         fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", heard.action, pipes[heard.id], heard.id, heard.extra);
         return heard;
     }
