@@ -37,7 +37,7 @@ void setup(void)
 }
 
 Packet ack; // issue with radio library, hack to workaround segfault
-bool listenForACK(int action, int attempt)
+bool listenForACK(int action)
 {
     //Listen for ACK
     radio.startListening();
@@ -55,10 +55,6 @@ bool listenForACK(int action, int attempt)
 
     if (timeout)
     {
-        if (attempt == 4)
-        {
-            printf("%u", 0);
-        }
         //If we waited too long the transmission failed
         fprintf(stderr, "Oh gosh, it's not giving me any response...\n\r");
         return false;
@@ -96,7 +92,7 @@ Packet listenForPackets()
             timeout = true;
         }
     }
-
+        
     if (timeout)
     {
         Packet empty;
@@ -113,7 +109,7 @@ Packet listenForPackets()
     }
 }
 
-bool sendAction(int id, int action, int attempt)
+bool sendAction(int id, int action)
 {
     Packet packet;
     packet.id = id;
@@ -125,10 +121,10 @@ bool sendAction(int id, int action, int attempt)
     else
         fprintf(stderr, "ok!\n\r");
 
-    return listenForACK(action, attempt);
+    return listenForACK(action);
 }
 
-bool send(int id, int action, char *msg, int attempt)
+bool send(int id, int action, char *msg)
 {
     //Returns true if ACK package is received
     //Stop listening
@@ -136,7 +132,7 @@ bool send(int id, int action, char *msg, int attempt)
 
     radio.openWritingPipe(pipes[id]);
 
-    return sendAction(id, action, attempt);
+    return sendAction(id, action);
 }
 
 char *socket_path = "/tmp/hidden";
@@ -226,13 +222,14 @@ int main(int argc, char **argv)
     setup();
 
     bool success = false;
+    int maxtries = 5;
     int numtries = 0;
 
     if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
     {
-        while (success == false && numtries < 5)
+        while (success == false && numtries < maxtries)
         {
-            success = send(dvalue, tvalue, cvalue, numtries);
+            success = send(dvalue, tvalue, cvalue);
             numtries++;
             usleep(10);
         }
