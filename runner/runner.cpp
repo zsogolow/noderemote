@@ -65,7 +65,7 @@ bool listenForACK(int action)
         radio.read(&ack, sizeof(ack));
         if (ack.action == action)
         {
-            printf("etra %u", ack.extra);
+            printf("%u", ack.extra);
             fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", ack.action, pipes[ack.id], ack.id, ack.extra);
             return true;
         }
@@ -98,14 +98,12 @@ Packet listenForPackets()
         Packet empty;
         empty.id = 0;
         empty.action = EMPTY;
-        fprintf(stderr, "%u", empty.id);
         return empty;
     }
     else
     {
         //If we received the message in time, let's read it and print it
         radio.read(&heard, sizeof(heard));
-        fprintf(stderr,"extra %u", heard.extra);
         fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", heard.action, pipes[heard.id], heard.id, heard.extra);
         return heard;
     }
