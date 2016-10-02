@@ -95,7 +95,8 @@ Packet listenForPackets()
         }
     }
         
-    printf("why???");
+    fprintf(stderr,"why???");
+    
     if (timeout)
     {
         Packet empty;
