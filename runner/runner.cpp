@@ -65,13 +65,13 @@ bool listenForACK(int action)
         radio.read(&ack, sizeof(ack));
         if (ack.action == action)
         {
-            printf("%d", ack.extra);
+            printf("%u", ack.extra);
             fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", ack.action, pipes[ack.id], ack.id, ack.extra);
             return true;
         }
         else
         {
-            printf("%d", 1);
+            printf("%u", 1);
             return false;
         }
     }
