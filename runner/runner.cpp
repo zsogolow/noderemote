@@ -235,38 +235,14 @@ int main(int argc, char **argv)
             usleep(10);
         }
 
-        struct sockaddr_un addr;
-        char buf[100];
-        int fd, rc;
-        if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
-        {
-            perror("socket error");
-            exit(-1);
-        }
-
-        memset(&addr, 0, sizeof(addr));
-        addr.sun_family = AF_UNIX;
-
-        strncpy(addr.sun_path, socket_path, sizeof(addr.sun_path) - 1);
-
-        if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
-        {
-            perror("connect error");
-            exit(-1);
-        }
-
         if (success == true)
         {
-            buf[0] = 1;
-            write(fd, buf, 1);
             return 0;
         }
         else
         {
             // needed for when we get no response from duino
-            // printf("%d", 0);
-            buf[0] = 0;
-            write(fd, buf, 1);
+            printf("%d", 0); 
             return 1;
         }
     }
