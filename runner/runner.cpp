@@ -71,7 +71,7 @@ bool listenForACK(int action)
         }
         else
         {
-            printf("%u", 1);
+            printf("%u", -1);
             return false;
         }
     }
