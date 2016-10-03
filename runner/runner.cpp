@@ -242,7 +242,7 @@ int main(int argc, char **argv)
         else
         {
             // needed for when we get no response from duino
-            printf("%d", -1); 
+            printf("%d", 10); 
             return 1;
         }
     }
