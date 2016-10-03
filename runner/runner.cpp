@@ -93,7 +93,7 @@ Packet listenForPackets()
             timeout = true;
         }
     }
-        
+
     if (timeout)
     {
         Packet empty;
@@ -237,9 +237,14 @@ int main(int argc, char **argv)
         }
 
         if (success == true)
+        {
             return 0;
+        }
         else
+        {
+            printf("%d", -1);
             return 1;
+        }
     }
     else if (tvalue == HEARTBEAT)
     {
