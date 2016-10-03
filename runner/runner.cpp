@@ -243,7 +243,7 @@ int main(int argc, char **argv)
         {
             // needed for when we get no response from duino
             printf("%d", 10); 
-            return 1;
+            return 0;
         }
     }
     else if (tvalue == HEARTBEAT)
