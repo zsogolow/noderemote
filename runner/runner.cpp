@@ -71,7 +71,6 @@ bool listenForACK(int action)
         }
         else
         {
-            printf("%u", 1);
             return false;
         }
     }
@@ -242,7 +241,8 @@ int main(int argc, char **argv)
         }
         else
         {
-            printf("%d", -1);
+            // needed for when we get no response from duino
+            printf("%d", -1); 
             return 1;
         }
     }
