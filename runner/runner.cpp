@@ -17,6 +17,11 @@ using namespace std;
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 
+char *socket_path = "/tmp/hidden";
+struct sockaddr_un addr;
+char buf[100];
+int fd, rc;
+
 void setup(void)
 {
     //Prepare the radio module
@@ -140,10 +145,6 @@ bool send(int id, int action, char *msg)
     return sendAction(id, action);
 }
 
-char *socket_path = "/tmp/hidden";
-struct sockaddr_un addr;
-char buf[100];
-int fd, rc;
 
 void prepareSocket()
 {
