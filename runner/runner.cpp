@@ -179,7 +179,7 @@ void loop()
             buf[1] = pack.action;
             buf[2] = pack.type;
             buf[3] = pack.extra;
-            write(fd, buf, 2);
+            write(fd, buf, 4);
         }
     }
 }
