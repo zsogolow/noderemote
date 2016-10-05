@@ -66,6 +66,11 @@ bool listenForACK(int action)
         if (ack.action == action)
         {
             printf("%u", ack.extra);
+            buf[0] = ack.id;
+            buf[1] = ack.action;
+            buf[2] = ack.type;
+            buf[3] = ack.extra;
+            write(fd, buf, 4);
             fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", ack.action, pipes[ack.id], ack.id, ack.extra);
             return true;
         }
@@ -136,11 +141,12 @@ bool send(int id, int action, char *msg)
 }
 
 char *socket_path = "/tmp/hidden";
-void loop()
+struct sockaddr_un addr;
+char buf[100];
+int fd, rc;
+
+void prepareSocket()
 {
-    struct sockaddr_un addr;
-    char buf[100];
-    int fd, rc;
     if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
     {
         perror("socket error");
@@ -157,6 +163,11 @@ void loop()
         perror("connect error");
         exit(-1);
     }
+}
+
+void loop()
+{
+    prepareSocket();
 
     while (true)
     {
@@ -228,6 +239,7 @@ int main(int argc, char **argv)
 
     if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
     {
+        prepareSocket();
         while (success == false && numtries < maxtries)
         {
             success = send(dvalue, tvalue, cvalue);
@@ -242,7 +254,9 @@ int main(int argc, char **argv)
         else
         {
             // needed for when we get no response from duino
-            printf("%d", 0); 
+            printf("%d", 0);
+            buf[0] = 0;
+            write(fd, buf, 1);
             return 1;
         }
     }
