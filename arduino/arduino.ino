@@ -84,8 +84,8 @@ Packet handleAction(Packet packet)
     Packet handled;
     handled.id = packet.id;
     handled.action = packet.action;
-    handled.extra = packet.id;
-        
+    handled.type = duty;
+    
     switch (packet.action)
     {
     case BLINK:
@@ -105,6 +105,7 @@ Packet handleAction(Packet packet)
         handled.extra = getRelayState();
         break;
     default:
+        handled.extra = 0;
         break;
     }
 
@@ -119,6 +120,7 @@ void loop(void)
         Packet packet;
         packet.id = ID;
         packet.action = HEARTBEAT;
+        packet.extra = 0;
         packet.type = duty;
         blink(blinkPin, 10);
         sendCallback(packet);
