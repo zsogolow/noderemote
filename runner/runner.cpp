@@ -70,7 +70,7 @@ bool listenForACK(int action)
         radio.read(&ack, sizeof(ack));
         if (ack.action == action)
         {
-            printf("%u", ack.extra);
+            fprintf(stderr, "%u", ack.extra);
             buf[0] = ack.id;
             buf[1] = ack.action;
             buf[2] = ack.type;
@@ -255,9 +255,12 @@ int main(int argc, char **argv)
         else
         {
             // needed for when we get no response from duino
-            printf("%d", 0);
-            buf[0] = 0;
-            write(fd, buf, 1);
+            fprintf(stderr, "%d", 0);
+            buf[0] = dvalue; // id
+            buf[1] = tvalue;  // action
+            buf[2] = -1;     // type
+            buf[3] = -1;     // extra
+            write(fd, buf, 4);
             return 1;
         }
     }

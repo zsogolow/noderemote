@@ -16,7 +16,7 @@ fs.stat(socketPath, function (err) {
             console.log(data);
 
             // send ack
-            localSerialConnection.write('ack!');
+           // localSerialConnection.write('ack!');
         });
         // write to socket with localSerialConnection.write()
     });
