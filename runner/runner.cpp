@@ -174,8 +174,10 @@ void loop()
     {
         Packet pack;
         pack = listenForPackets();
-        buf[0] = pack.type;
-        buf[1] = pack.id;
+        buf[0] = pack.id;
+        buf[1] = pack.action;
+        buf[2] = pack.type;
+        buf[3] = pack.extra;
         if (pack.id > 0 && pack.action == HEARTBEAT)
         {
             write(fd, buf, 2);
