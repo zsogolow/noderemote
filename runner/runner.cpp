@@ -145,7 +145,6 @@ bool send(int id, int action, char *msg)
     return sendAction(id, action);
 }
 
-
 void prepareSocket()
 {
     if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
@@ -174,12 +173,12 @@ void loop()
     {
         Packet pack;
         pack = listenForPackets();
-        buf[0] = pack.id;
-        buf[1] = pack.action;
-        buf[2] = pack.type;
-        buf[3] = pack.extra;
         if (pack.id > 0 && pack.action == HEARTBEAT)
         {
+            buf[0] = pack.id;
+            buf[1] = pack.action;
+            buf[2] = pack.type;
+            buf[3] = pack.extra;
             write(fd, buf, 2);
         }
     }
@@ -259,7 +258,7 @@ int main(int argc, char **argv)
             // needed for when we get no response from duino
             fprintf(stderr, "%d", 0);
             buf[0] = dvalue; // id
-            buf[1] = tvalue;  // action
+            buf[1] = tvalue; // action
             buf[2] = -1;     // type
             buf[3] = -1;     // extra
             write(fd, buf, 4);
