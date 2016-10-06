@@ -262,7 +262,7 @@ int main(int argc, char **argv)
             buf[2] = -1;     // type
             buf[3] = -1;     // extra
             write(fd, buf, 4);
-            return 1;
+            return 0;
         }
     }
     else if (tvalue == HEARTBEAT)
