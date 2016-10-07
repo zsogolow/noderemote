@@ -258,11 +258,20 @@ int main(int argc, char **argv)
             fprintf(stderr, "%d", 0);
             buf[0] = dvalue; // id
             buf[1] = tvalue; // action
-            buf[2] = 0;     // type
-            buf[3] = 0;     // extra
-            write(fd, buf, 4);
+            buf[2] = 0;      // type
+            buf[3] = 0;      // extra
+            if (write(fd, buf, 4) != 4)
+            {
+                if (rc > 0)
+                    fprintf(stderr, "partial write");
+                else
+                {
+                    fprintf(stderr, "write error");
+                    exit(-1);
+                }
+            }
         }
     }
-
+    
     return 0;
 }
