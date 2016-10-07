@@ -145,7 +145,7 @@ bool send(int id, int action, char *msg)
     return sendAction(id, action);
 }
 
-void prepareSocket(char *socketPath)
+void prepareSocket()
 {
     if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
     {
@@ -156,7 +156,7 @@ void prepareSocket(char *socketPath)
     memset(&addr, 0, sizeof(addr));
     addr.sun_family = AF_UNIX;
 
-    strncpy(addr.sun_path, socketPath, sizeof(addr.sun_path) - 1);
+    strncpy(addr.sun_path, socket_path, sizeof(addr.sun_path) - 1);
 
     if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
     {
@@ -167,6 +167,8 @@ void prepareSocket(char *socketPath)
 
 void loop()
 {
+    prepareSocket();
+
     while (true)
     {
         Packet pack;
@@ -239,31 +241,13 @@ int main(int argc, char **argv)
 
     if (tvalue == HEARTBEAT)
     {
-        prepareSocket("/tmp/heartbeat");
         loop();
         return 0;
     }
     else if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
     {
-        switch (tvalue)
-        {
-        case PING:
-            prepareSocket("/tmp/ping");
-            break;
-        case BLINK:
-            prepareSocket("/tmp/blink");
-            break;
-        case RELAY_STATE:
-            prepareSocket("/tmp/relay_state");
-            break;
-        case RELAY_ON:
-            prepareSocket("/tmp/relay_on");
-            break;
-        case RELAY_OFF:
-            prepareSocket("/tmp/relay_on");
-            break;
-        }
-
+        prepareSocket();
+        
         while (success == false && numtries < maxtries)
         {
             success = send(dvalue, tvalue, cvalue);
@@ -277,8 +261,8 @@ int main(int argc, char **argv)
             fprintf(stderr, "%d", 0);
             buf[0] = dvalue; // id
             buf[1] = tvalue; // action
-            buf[2] = 0;     // type
-            buf[3] = 0;     // extra
+            buf[2] = -1;     // type
+            buf[3] = -1;     // extra
             write(fd, buf, 4);
         }
 
