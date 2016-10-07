@@ -239,7 +239,7 @@ int main(int argc, char **argv)
 
     if (tvalue == HEARTBEAT)
     {
-        prepareSocket(socket_path);
+        prepareSocket("/tmp/heartbeat");
         loop();
         return 0;
     }
