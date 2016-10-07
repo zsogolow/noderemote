@@ -38,6 +38,7 @@ void setup(void)
 
     radio.startListening();
 
+    prepareSocket();
     // radio.printDetails();
 }
 
@@ -167,8 +168,6 @@ void prepareSocket()
 
 void loop()
 {
-    prepareSocket();
-
     while (true)
     {
         Packet pack;
@@ -245,8 +244,6 @@ int main(int argc, char **argv)
     }
     else if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
     {
-        prepareSocket();
-
         while (success == false && numtries < maxtries)
         {
             success = send(dvalue, tvalue, cvalue);
@@ -265,6 +262,6 @@ int main(int argc, char **argv)
             write(fd, buf, 4);
         }
     }
-    
+
     return 0;
 }
