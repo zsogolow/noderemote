@@ -258,8 +258,8 @@ int main(int argc, char **argv)
             fprintf(stderr, "%d", 0);
             buf[0] = dvalue; // id
             buf[1] = tvalue; // action
-            buf[2] = -1;     // type
-            buf[3] = -1;     // extra
+            buf[2] = 0;     // type
+            buf[3] = 0;     // extra
             write(fd, buf, 4);
         }
     }
