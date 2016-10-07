@@ -38,7 +38,6 @@ void setup(void)
 
     radio.startListening();
 
-    prepareSocket();
     // radio.printDetails();
 }
 
@@ -237,6 +236,8 @@ int main(int argc, char **argv)
     bool success = false;
     int maxtries = 5;
     int numtries = 0;
+
+    prepareSocket();
 
     if (tvalue == HEARTBEAT)
     {
