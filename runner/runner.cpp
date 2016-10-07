@@ -260,16 +260,7 @@ int main(int argc, char **argv)
             buf[1] = tvalue; // action
             buf[2] = 0;      // type
             buf[3] = 0;      // extra
-            if (write(fd, buf, 4) != 4)
-            {
-                if (4 > 0)
-                    fprintf(stderr, "partial write");
-                else
-                {
-                    fprintf(stderr, "write error");
-                    exit(-1);
-                }
-            }
+            write(fd, buf, 4);
         }
     }
 
