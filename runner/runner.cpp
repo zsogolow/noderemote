@@ -245,7 +245,24 @@ int main(int argc, char **argv)
     }
     else if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
     {
-        prepareSocket(socket_path);
+        switch (tvalue)
+        {
+        case PING:
+            prepareSocket("/tmp/ping");
+            break;
+        case BLINK:
+            prepareSocket("/tmp/blink");
+            break;
+        case RELAY_STATE:
+            prepareSocket("/tmp/relay_state");
+            break;
+        case RELAY_ON:
+            prepareSocket("/tmp/relay_on");
+            break;
+        case RELAY_OFF:
+            prepareSocket("/tmp/relay_on");
+            break;
+        }
 
         while (success == false && numtries < maxtries)
         {
