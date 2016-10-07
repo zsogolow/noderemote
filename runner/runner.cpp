@@ -262,7 +262,7 @@ int main(int argc, char **argv)
             buf[3] = 0;      // extra
             if (write(fd, buf, 4) != 4)
             {
-                if (rc > 0)
+                if (4 > 0)
                     fprintf(stderr, "partial write");
                 else
                 {
@@ -272,6 +272,6 @@ int main(int argc, char **argv)
             }
         }
     }
-    
+
     return 0;
 }
