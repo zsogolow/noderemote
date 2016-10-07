@@ -242,12 +242,11 @@ int main(int argc, char **argv)
     if (tvalue == HEARTBEAT)
     {
         loop();
-        return 0;
     }
     else if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
     {
         prepareSocket();
-        
+
         while (success == false && numtries < maxtries)
         {
             success = send(dvalue, tvalue, cvalue);
@@ -265,12 +264,7 @@ int main(int argc, char **argv)
             buf[3] = -1;     // extra
             write(fd, buf, 4);
         }
-
-        return 0;
     }
-    else
-    {
-        // Unknown
-        return 1;
-    }
+    
+    return 0;
 }
