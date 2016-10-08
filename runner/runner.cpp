@@ -27,7 +27,7 @@ void setup(void)
     //Prepare the radio module
     fprintf(stderr, "\nPreparing interface\n");
     radio.begin();
-    radio.setRetries(15, 15);
+    radio.setRetries(15, 2);
 
     radio.openReadingPipe(0, pipes[0]);
     radio.openReadingPipe(1, pipes[1]);
