@@ -129,8 +129,7 @@ bool sendAction(int id, int action)
     else
         fprintf(stderr, "ok!\n\r");
 
-    radio.startListening();
-    return ok; //listenForACK(action);
+    return listenForACK(action);
 }
 
 bool send(int id, int action, char *msg)
@@ -237,9 +236,10 @@ int main(int argc, char **argv)
     int maxtries = 5;
     int numtries = 0;
 
+    prepareSocket();
+
     if (tvalue == HEARTBEAT)
     {
-        prepareSocket();
         loop();
     }
     else if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
