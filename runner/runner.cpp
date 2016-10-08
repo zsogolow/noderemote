@@ -116,7 +116,7 @@ Packet listenForPackets()
         radio.read(&heard, sizeof(heard));
         if (heard.action != HEARTBEAT)
         {
-            radio.write(&packet, sizeof(packet));
+            radio.write(&heard, sizeof(heard));
         }
 
         fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", heard.action, pipes[heard.id], heard.id, heard.extra);
