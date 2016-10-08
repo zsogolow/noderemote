@@ -243,10 +243,11 @@ int main(int argc, char **argv)
     int maxtries = 5;
     int numtries = 0;
 
+    setup();
+    prepareSocket();
+
     if (tvalue == HEARTBEAT)
     {
-        setup();
-        prepareSocket();
         loop();
     }
     else if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
@@ -260,7 +261,6 @@ int main(int argc, char **argv)
 
         if (success == false)
         {
-            prepareSocket();
             // needed for when we get no response from duino
             fprintf(stderr, "%d", 0);
             buf[0] = dvalue; // id
