@@ -127,11 +127,15 @@ bool sendAction(int id, int action)
 
     bool ok = radio.write(&packet, sizeof(packet));
     if (!ok)
+    {
         fprintf(stderr, "failed...\n\r");
+        return false;
+    }
     else
+    {
         fprintf(stderr, "ok!\n\r");
-
-    return ok == true; // listenForACK(action);
+        return true;
+    }
 }
 
 bool send(int id, int action, char *msg)
