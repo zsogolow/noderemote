@@ -171,7 +171,7 @@ void loop()
     {
         Packet pack;
         pack = listenForPackets();
-        if (pack.id > 0 && pack.action == HEARTBEAT)
+        if (pack.id > 0)
         {
             buf[0] = pack.id;
             buf[1] = pack.action;
