@@ -231,14 +231,13 @@ int main(int argc, char **argv)
         }
     }
 
-    setup();
-
     bool success = false;
     int maxtries = 5;
     int numtries = 0;
 
     if (tvalue == HEARTBEAT)
     {
+        setup();
         prepareSocket();
         loop();
     }
