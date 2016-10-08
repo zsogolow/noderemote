@@ -131,7 +131,7 @@ bool sendAction(int id, int action)
     else
         fprintf(stderr, "ok!\n\r");
 
-    return ok == true; // listenForACK(action);
+    return listenForACK(action);
 }
 
 bool send(int id, int action, char *msg)
@@ -171,7 +171,7 @@ void loop()
     {
         Packet pack;
         pack = listenForPackets();
-        if (pack.id > 0)
+        if (pack.id > 0 && pack.action == HEARTBEAT)
         {
             buf[0] = pack.id;
             buf[1] = pack.action;
@@ -231,13 +231,16 @@ int main(int argc, char **argv)
         }
     }
 
+    setup();
+
     bool success = false;
     int maxtries = 5;
     int numtries = 0;
 
+    prepareSocket();
+
     if (tvalue == HEARTBEAT)
     {
-        setup();
         loop();
     }
     else if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
@@ -252,7 +255,6 @@ int main(int argc, char **argv)
         if (success == false)
         {
             // needed for when we get no response from duino
-            prepareSocket();
             fprintf(stderr, "%d", 0);
             buf[0] = dvalue; // id
             buf[1] = tvalue; // action
