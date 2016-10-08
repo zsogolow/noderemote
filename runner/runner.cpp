@@ -131,7 +131,7 @@ bool sendAction(int id, int action)
     else
         fprintf(stderr, "ok!\n\r");
 
-    return listenForACK(action);
+    return ok == true; // listenForACK(action);
 }
 
 bool send(int id, int action, char *msg)
@@ -142,7 +142,11 @@ bool send(int id, int action, char *msg)
 
     radio.openWritingPipe(pipes[id]);
 
-    return sendAction(id, action);
+    bool success = sendAction(id, action);
+
+    radio.startListening();
+
+    return success;
 }
 
 void prepareSocket()
@@ -171,7 +175,7 @@ void loop()
     {
         Packet pack;
         pack = listenForPackets();
-        if (pack.id > 0 && pack.action == HEARTBEAT)
+        if (pack.id > 0)
         {
             buf[0] = pack.id;
             buf[1] = pack.action;
@@ -231,16 +235,14 @@ int main(int argc, char **argv)
         }
     }
 
-    setup();
-
     bool success = false;
     int maxtries = 5;
     int numtries = 0;
 
-    prepareSocket();
-
     if (tvalue == HEARTBEAT)
     {
+        setup();
+        prepareSocket();
         loop();
     }
     else if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
@@ -254,6 +256,7 @@ int main(int argc, char **argv)
 
         if (success == false)
         {
+            prepareSocket();
             // needed for when we get no response from duino
             fprintf(stderr, "%d", 0);
             buf[0] = dvalue; // id
