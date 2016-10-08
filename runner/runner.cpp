@@ -127,15 +127,11 @@ bool sendAction(int id, int action)
 
     bool ok = radio.write(&packet, sizeof(packet));
     if (!ok)
-    {
         fprintf(stderr, "failed...\n\r");
-        return false;
-    }
     else
-    {
         fprintf(stderr, "ok!\n\r");
-        return true;
-    }
+
+    return listenForACK(action);
 }
 
 bool send(int id, int action, char *msg)
@@ -146,11 +142,7 @@ bool send(int id, int action, char *msg)
 
     radio.openWritingPipe(pipes[id]);
 
-    bool success = sendAction(id, action);
-
-    radio.startListening();
-
-    return success;
+    return sendAction(id, action);
 }
 
 void prepareSocket()
@@ -179,7 +171,7 @@ void loop()
     {
         Packet pack;
         pack = listenForPackets();
-        if (pack.id > 0)
+        if (pack.id > 0 && pack.action == HEARTBEAT)
         {
             buf[0] = pack.id;
             buf[1] = pack.action;
@@ -239,11 +231,12 @@ int main(int argc, char **argv)
         }
     }
 
+    setup();
+
     bool success = false;
     int maxtries = 5;
     int numtries = 0;
 
-    setup();
     prepareSocket();
 
     if (tvalue == HEARTBEAT)
