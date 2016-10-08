@@ -27,7 +27,7 @@ void setup(void)
     //Prepare the radio module
     fprintf(stderr, "\nPreparing interface\n");
     radio.begin();
-    radio.setRetries(15, 2);
+    radio.setRetries(15, 15);
 
     radio.openReadingPipe(0, pipes[0]);
     radio.openReadingPipe(1, pipes[1]);
@@ -89,8 +89,6 @@ bool listenForACK(int action)
 Packet heard;
 Packet listenForPackets()
 {
-    //Listen for ACK
-    radio.startListening();
     //Let's take the time while we listen
     unsigned long started_waiting_at = millis();
     bool timeout = false;
@@ -131,7 +129,8 @@ bool sendAction(int id, int action)
     else
         fprintf(stderr, "ok!\n\r");
 
-    return listenForACK(action);
+        radio.startListening();
+    return ok; //listenForACK(action);
 }
 
 bool send(int id, int action, char *msg)
@@ -167,6 +166,7 @@ void prepareSocket()
 
 void loop()
 {
+    radio.startListening();
     while (true)
     {
         Packet pack;
