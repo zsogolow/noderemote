@@ -238,7 +238,6 @@ int main(int argc, char **argv)
     if (tvalue == HEARTBEAT)
     {
         setup();
-        prepareSocket();
         loop();
     }
     else if (tvalue == PING || tvalue == BLINK || tvalue == RELAY_STATE || tvalue == RELAY_ON || tvalue == RELAY_OFF)
@@ -253,6 +252,7 @@ int main(int argc, char **argv)
         if (success == false)
         {
             // needed for when we get no response from duino
+            prepareSocket();
             fprintf(stderr, "%d", 0);
             buf[0] = dvalue; // id
             buf[1] = tvalue; // action
