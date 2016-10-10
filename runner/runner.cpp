@@ -67,24 +67,17 @@ bool listenForACK(int action)
     else
     {
         //If we received the message in time, let's read it and print it
-        if (radio.available())
+        radio.read(&ack, sizeof(ack));
+        if (ack.action == action)
         {
-            radio.read(&ack, sizeof(ack));
-            if (ack.action == action)
-            {
-                fprintf(stderr, "%u", ack.extra);
-                buf[0] = ack.id;
-                buf[1] = ack.action;
-                buf[2] = ack.type;
-                buf[3] = ack.extra;
-                write(fd, buf, 4);
-                fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", ack.action, pipes[ack.id], ack.id, ack.extra);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            fprintf(stderr, "%u", ack.extra);
+            buf[0] = ack.id;
+            buf[1] = ack.action;
+            buf[2] = ack.type;
+            buf[3] = ack.extra;
+            write(fd, buf, 4);
+            fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", ack.action, pipes[ack.id], ack.id, ack.extra);
+            return true;
         }
         else
         {
