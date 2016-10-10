@@ -41,7 +41,6 @@ void setup(void)
     // radio.printDetails();
 }
 
-Packet ack; // issue with radio library, hack to workaround segfault
 bool listenForACK(int action)
 {
     //Listen for ACK
@@ -67,6 +66,7 @@ bool listenForACK(int action)
     else
     {
         //If we received the message in time, let's read it and print it
+        Packet ack; // issue with radio library, hack to workaround segfault
         radio.read(&ack, sizeof(ack));
         if (ack.action == action)
         {
