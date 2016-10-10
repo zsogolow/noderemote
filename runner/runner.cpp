@@ -41,6 +41,7 @@ void setup(void)
     // radio.printDetails();
 }
 
+Packet ack; // issue with radio library, hack to workaround segfault
 bool listenForACK(int action)
 {
     //Listen for ACK
@@ -66,18 +67,24 @@ bool listenForACK(int action)
     else
     {
         //If we received the message in time, let's read it and print it
-        Packet ack; // issue with radio library, hack to workaround segfault
-        radio.read(&ack, sizeof(ack));
-        if (ack.action == action)
+        if (radio.available())
         {
-            fprintf(stderr, "%u", ack.extra);
-            buf[0] = ack.id;
-            buf[1] = ack.action;
-            buf[2] = ack.type;
-            buf[3] = ack.extra;
-            write(fd, buf, 4);
-            fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", ack.action, pipes[ack.id], ack.id, ack.extra);
-            return true;
+            radio.read(&ack, sizeof(ack));
+            if (ack.action == action)
+            {
+                fprintf(stderr, "%u", ack.extra);
+                buf[0] = ack.id;
+                buf[1] = ack.action;
+                buf[2] = ack.type;
+                buf[3] = ack.extra;
+                write(fd, buf, 4);
+                fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", ack.action, pipes[ack.id], ack.id, ack.extra);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
