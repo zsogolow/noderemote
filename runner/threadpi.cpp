@@ -38,8 +38,6 @@ void setup(void)
     radio.openReadingPipe(5, pipes[5]);
 
     radio.startListening();
-
-    prepareSocket();
 }
 
 Packet ack; // issue with radio library, hack to workaround segfault
@@ -235,7 +233,7 @@ void listenOnUnixSocket()
 int main(int argc, char *argv[])
 {
     setup();
-
+    prepareSocket();
     std::thread t1(listenOnUnixSocket);
 
     t1.join();
