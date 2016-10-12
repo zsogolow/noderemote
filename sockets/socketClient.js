@@ -12,6 +12,7 @@ client.on('data', (data) => {
     console.log(data.toString());
 
     // end after we get a response
+    client.end();
 });
 
 client.on('end', () => {
