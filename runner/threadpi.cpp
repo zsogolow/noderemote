@@ -139,7 +139,7 @@ void handleSocketMessage(int rc, char buf[])
 
     prepareSocket();
 
-    if (sizeof(buf) == 2)
+    if (rc == 2)
     {
         int dvalue = buf[0] - '0';
         int tvalue = buf[1] - '0';
