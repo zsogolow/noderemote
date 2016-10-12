@@ -38,6 +38,8 @@ void setup(void)
     radio.openReadingPipe(5, pipes[5]);
 
     radio.startListening();
+
+    prepareSocket();
 }
 
 Packet ack; // issue with radio library, hack to workaround segfault
@@ -136,8 +138,6 @@ void handleSocketMessage(int rc, char buf[])
     bool success = false;
     int maxtries = 5;
     int numtries = 0;
-
-    prepareSocket();
 
     if (rc == 2)
     {
