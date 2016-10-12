@@ -14,7 +14,7 @@ fs.stat(socketPath, function (err) {
         localSerialConnection.on('data', function (data) {
             // data is a buffer from the socket
             console.log(data);
-
+            
             // send ack
            // localSerialConnection.write('ack!');
         });
