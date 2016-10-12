@@ -1,6 +1,6 @@
 var net = require('net');
 var fs = require('fs');
-var socketPath = '/tmp/hidden';
+var socketPath = '/tmp/responses';
 
 fs.stat(socketPath, function (err) {
 
