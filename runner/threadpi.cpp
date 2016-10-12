@@ -242,6 +242,6 @@ int main(int argc, char *argv[])
 
     std::thread t1(listenOnUnixSocket);
 
-    t1.join();
+    t1.detach();
     return 0;
 }
