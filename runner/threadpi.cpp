@@ -140,8 +140,8 @@ void handleSocketMessage(int rc, char buf[])
 
     prepareSocket();
 
-    int dvalue = buf[0];
-    int tvalue = buf[1];
+    int dvalue = 1;
+    int tvalue = 1;
     char *cvalue = "";
 
     while (success == false && numtries < maxtries)
@@ -229,7 +229,9 @@ void listenOnUnixSocket()
 int main(int argc, char *argv[])
 {
     setup();
+    
     std::thread t1(listenOnUnixSocket);
+
     t1.join();
     return 0;
 }
