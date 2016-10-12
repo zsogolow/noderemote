@@ -6,13 +6,13 @@ const client = net.connect(socketPath, () => {
     //'connect' listener
     console.log('connected to server!');
     client.write('11');
+    client.end();
 });
 
 client.on('data', (data) => {
     console.log(data.toString());
 
     // end after we get a response
-    client.end();
 });
 
 client.on('end', () => {
