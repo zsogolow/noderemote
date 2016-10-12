@@ -137,11 +137,7 @@ void handleSocketMessage(int rc, char buf[])
     bool success = false;
     int maxtries = 5;
     int numtries = 0;
-    if (!isConfigured)
-    {
-        prepareSocket("/tmp/responses");
-        isConfigured = true;
-    }
+    prepareSocket("/tmp/responses");
 
     if (rc == 2)
     {
@@ -221,7 +217,7 @@ void listenOnUnixSocket()
         while ((rc = read(cl, buf, sizeof(buf))) > 0)
         {
             printf("read %u bytes: %.*s\n", rc, rc, buf);
-         //   handleSocketMessage(rc, buf);
+            //   handleSocketMessage(rc, buf);
         }
         if (rc == -1)
         {
