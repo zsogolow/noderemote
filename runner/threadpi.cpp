@@ -72,7 +72,7 @@ void listen()
 
 int main(int argc, char *argv[])
 {
-    std::thread looper(listen);
+    std::thread looper(listen, NULL);
 
     looper.join();
 
