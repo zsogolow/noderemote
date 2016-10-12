@@ -75,7 +75,7 @@ bool listenForACK(int action)
             buf[1] = ack.action;
             buf[2] = ack.type;
             buf[3] = ack.extra;
-            write(fd, buf, 4);
+            // write(fd, buf, 4);
             fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", ack.action, pipes[ack.id], ack.id, ack.extra);
             return true;
         }
@@ -164,7 +164,7 @@ void handleSocketMessage(int rc, char buf[])
             buf[1] = tvalue; // action
             buf[2] = 0;      // type
             buf[3] = 0;      // extra
-            write(fd, buf, 4);
+          //  write(fd, buf, 4);
         }
     }
     else
