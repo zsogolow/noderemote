@@ -132,7 +132,7 @@ void prepareSocket()
     }
 }
 
-void handleSocketMessage(int rc, char[] buf)
+void handleSocketMessage(int rc, char buf[])
 {
     bool success = false;
     int maxtries = 5;
