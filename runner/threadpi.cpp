@@ -22,6 +22,7 @@ char *socket_path = "/tmp/hidden";
 struct sockaddr_un addr;
 char buf[100];
 int fd, rc;
+bool isConfigured = false;
 
 void setup(void)
 {
