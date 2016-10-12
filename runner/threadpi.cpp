@@ -233,9 +233,8 @@ void listenOnUnixSocket()
 int main(int argc, char *argv[])
 {
     setup();
-    prepareSocket();
     std::thread t1(listenOnUnixSocket);
-
+    prepareSocket();
     t1.join();
     return 0;
 }
