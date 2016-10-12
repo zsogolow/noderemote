@@ -112,7 +112,7 @@ bool send(int id, int action, char *msg)
     return sendAction(id, action);
 }
 
-void prepareSocket()
+void prepareSocket(char *path)
 {
     if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
     {
@@ -123,7 +123,7 @@ void prepareSocket()
     memset(&addr, 0, sizeof(addr));
     addr.sun_family = AF_UNIX;
 
-    strncpy(addr.sun_path, socket_path, sizeof(addr.sun_path) - 1);
+    strncpy(addr.sun_path, path, sizeof(addr.sun_path) - 1);
 
     if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
     {
@@ -139,7 +139,7 @@ void handleSocketMessage(int rc, char buf[])
     int numtries = 0;
     if (!isConfigured)
     {
-        prepareSocket();
+        prepareSocket("/tmp/responses");
         isConfigured = true;
     }
 
