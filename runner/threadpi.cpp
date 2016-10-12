@@ -8,7 +8,7 @@
 //char *socket_path = "./socket";
 char *socket_path = "/tmp/hidden";
 
-void listen()
+void listenHere()
 {
     struct sockaddr_un addr;
     char buf[100];
@@ -72,9 +72,9 @@ void listen()
 
 int main(int argc, char *argv[])
 {
-    std::thread looper(listen, NULL);
+    std::thread t1(listenHere);
 
-    looper.join();
+    t1.join();
 
     return 0;
 }
