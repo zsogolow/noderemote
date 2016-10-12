@@ -221,7 +221,7 @@ void listenOnUnixSocket()
         while ((rc = read(cl, buf, sizeof(buf))) > 0)
         {
             printf("read %u bytes: %.*s\n", rc, rc, buf);
-            handleSocketMessage(rc, buf);
+         //   handleSocketMessage(rc, buf);
         }
         if (rc == -1)
         {
