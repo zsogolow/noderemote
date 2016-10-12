@@ -140,8 +140,8 @@ void handleSocketMessage(int rc, char buf[])
 
     prepareSocket();
 
-    int dvalue = atoi(&buf[0]);
-    int tvalue = atoi(&buf[1]);
+    int dvalue = buf[0] - '0';
+    int tvalue = buf[1] - '0';
 
     char *cvalue = "";
 
