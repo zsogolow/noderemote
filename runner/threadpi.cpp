@@ -19,6 +19,9 @@ using namespace std;
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 
 char *socket_path = "/tmp/hidden";
+struct sockaddr_un addr;
+char buf[100];
+int fd, rc;
 
 void setup(void)
 {
@@ -37,68 +40,6 @@ void setup(void)
     radio.startListening();
 }
 
-void listenOnUnixSocket()
-{
-    struct sockaddr_un addr;
-    char buf[100];
-    int fd, cl, rc;
-
-    if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
-    {
-        perror("socket error");
-        exit(-1);
-    }
-
-    memset(&addr, 0, sizeof(addr));
-    addr.sun_family = AF_UNIX;
-    if (*socket_path == '\0')
-    {
-        *addr.sun_path = '\0';
-        strncpy(addr.sun_path + 1, socket_path + 1, sizeof(addr.sun_path) - 2);
-    }
-    else
-    {
-        strncpy(addr.sun_path, socket_path, sizeof(addr.sun_path) - 1);
-        unlink(socket_path);
-    }
-
-    if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
-    {
-        perror("bind error");
-        exit(-1);
-    }
-
-    if (listen(fd, 5) == -1)
-    {
-        perror("listen error");
-        exit(-1);
-    }
-
-    while (1)
-    {
-        if ((cl = accept(fd, NULL, NULL)) == -1)
-        {
-            perror("accept error");
-            continue;
-        }
-
-        while ((rc = read(cl, buf, sizeof(buf))) > 0)
-        {
-            printf("read %u bytes: %.*s\n", rc, rc, buf);
-            handleSocketMessage(rc, buf);
-        }
-        if (rc == -1)
-        {
-            perror("read");
-            exit(-1);
-        }
-        else if (rc == 0)
-        {
-            printf("EOF\n");
-            close(cl);
-        }
-    }
-}
 
 Packet ack; // issue with radio library, hack to workaround segfault
 bool listenForACK(int action)
@@ -219,6 +160,69 @@ void handleSocketMessage(int rc, char[] buf)
         buf[2] = 0;      // type
         buf[3] = 0;      // extra
         write(fd, buf, 4);
+    }
+}
+
+void listenOnUnixSocket()
+{
+    struct sockaddr_un addr;
+    char buf[100];
+    int fd, cl, rc;
+
+    if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
+    {
+        perror("socket error");
+        exit(-1);
+    }
+
+    memset(&addr, 0, sizeof(addr));
+    addr.sun_family = AF_UNIX;
+    if (*socket_path == '\0')
+    {
+        *addr.sun_path = '\0';
+        strncpy(addr.sun_path + 1, socket_path + 1, sizeof(addr.sun_path) - 2);
+    }
+    else
+    {
+        strncpy(addr.sun_path, socket_path, sizeof(addr.sun_path) - 1);
+        unlink(socket_path);
+    }
+
+    if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
+    {
+        perror("bind error");
+        exit(-1);
+    }
+
+    if (listen(fd, 5) == -1)
+    {
+        perror("listen error");
+        exit(-1);
+    }
+
+    while (1)
+    {
+        if ((cl = accept(fd, NULL, NULL)) == -1)
+        {
+            perror("accept error");
+            continue;
+        }
+
+        while ((rc = read(cl, buf, sizeof(buf))) > 0)
+        {
+            printf("read %u bytes: %.*s\n", rc, rc, buf);
+            handleSocketMessage(rc, buf);
+        }
+        if (rc == -1)
+        {
+            perror("read");
+            exit(-1);
+        }
+        else if (rc == 0)
+        {
+            printf("EOF\n");
+            close(cl);
+        }
     }
 }
 
