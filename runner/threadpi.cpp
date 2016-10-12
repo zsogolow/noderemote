@@ -40,7 +40,6 @@ void setup(void)
     radio.startListening();
 }
 
-
 Packet ack; // issue with radio library, hack to workaround segfault
 bool listenForACK(int action)
 {
@@ -140,27 +139,33 @@ void handleSocketMessage(int rc, char buf[])
 
     prepareSocket();
 
-    int dvalue = buf[0] - '0';
-    int tvalue = buf[1] - '0';
-
-    char *cvalue = "";
-
-    while (success == false && numtries < maxtries)
+    if (sizeof(buf) > 2)
     {
-        success = send(dvalue, tvalue, cvalue);
-        numtries++;
-        usleep(10);
+        int dvalue = buf[0] - '0';
+        int tvalue = buf[1] - '0';
+        char *cvalue = "";
+
+        while (success == false && numtries < maxtries)
+        {
+            success = send(dvalue, tvalue, cvalue);
+            numtries++;
+            usleep(10);
+        }
+
+        if (success == false)
+        {
+            // needed for when we get no response from duino
+            fprintf(stderr, "%d", 0);
+            buf[0] = dvalue; // id
+            buf[1] = tvalue; // action
+            buf[2] = 0;      // type
+            buf[3] = 0;      // extra
+            write(fd, buf, 4);
+        }
     }
-
-    if (success == false)
+    else
     {
-        // needed for when we get no response from duino
-        fprintf(stderr, "%d", 0);
-        buf[0] = dvalue; // id
-        buf[1] = tvalue; // action
-        buf[2] = 0;      // type
-        buf[3] = 0;      // extra
-        write(fd, buf, 4);
+        // ignore it
     }
 }
 
@@ -230,7 +235,7 @@ void listenOnUnixSocket()
 int main(int argc, char *argv[])
 {
     setup();
-    
+
     std::thread t1(listenOnUnixSocket);
 
     t1.join();
