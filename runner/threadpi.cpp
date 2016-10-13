@@ -282,8 +282,8 @@ void listenForPackets()
         //     write(fd, buf, 4);
         //     fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", heard.action, pipes[heard.id], heard.id, heard.extra);
         // }
+        // }
     }
-}
 }
 
 int main(int argc, char *argv[])
