@@ -257,10 +257,8 @@ void listenForPackets()
             buf[3] = heard.extra;
             write(fd, buf, 4);
         }
-        else
-        {
-            usleep(10);
-        }
+
+        usleep(10);
         // //Let's take the time while we listen
         // unsigned long started_waiting_at = millis();
         // bool timeout = false;
