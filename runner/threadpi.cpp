@@ -112,6 +112,8 @@ bool send(int id, int action, char *msg)
     return sendAction(id, action);
 }
 
+bool isPrepared = false;
+
 void prepareSocket(char *path)
 {
     if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
@@ -144,7 +146,7 @@ void handleSocketMessage(int rc, char buf[])
     {
         prepareSocket("/tmp/responses");
     }
-    
+
     if (rc == 2)
     {
         int dvalue = buf[0] - '0';
@@ -173,7 +175,7 @@ void handleSocketMessage(int rc, char buf[])
         // ignore it
     }
 }
-bool isPrepared = false;
+
 bool isActing = false;
 
 void listenOnUnixSocket()
