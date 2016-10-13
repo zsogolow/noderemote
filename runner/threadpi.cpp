@@ -217,7 +217,9 @@ void listenOnUnixSocket()
         while ((rc = read(cl, buf, sizeof(buf))) > 0)
         {
             printf("read %u bytes: %.*s\n", rc, rc, buf);
+            isActing = true;
             handleSocketMessage(rc, buf);
+            isActing = false;
         }
         if (rc == -1)
         {
@@ -232,12 +234,56 @@ void listenOnUnixSocket()
     }
 }
 
+bool isActing = false;
+
+Packet heard;
+void listenForPackets()
+{
+    while (1)
+    {
+        if (!isActing)
+        {
+            //Let's take the time while we listen
+            unsigned long started_waiting_at = millis();
+            bool timeout = false;
+            while (!radio.available() && !timeout)
+            {
+                //printf("%d", !radio.available());
+                if (millis() - started_waiting_at > 1000)
+                {
+                    timeout = true;
+                }
+            }
+
+            if (timeout)
+            {
+                Packet empty;
+                empty.id = 0;
+                empty.action = EMPTY;
+            }
+            else
+            {
+                //If we received the message in time, let's read it and print it
+                radio.read(&heard, sizeof(heard));
+                buf[0] = heard.id;
+                buf[1] = heard.action;
+                buf[2] = heard.type;
+                buf[3] = heard.extra;
+                write(fd, buf, 4);
+                fprintf(stderr, "Yay! Got action %u from: 0x%" PRIx64 " (%u) with extra: %u.\n\r", heard.action, pipes[heard.id], heard.id, heard.extra);
+            }
+        }
+    }
+}
+
+thread heartbeat;
+
 int main(int argc, char *argv[])
 {
     setup();
-
-    std::thread t1(listenOnUnixSocket);
-
+    thread t1(listenOnUnixSocket);
+    heartbeat(listenForPackets);
+    heartbeat.join();
     t1.join();
     return 0;
 }
