@@ -163,8 +163,8 @@ void handleSocketMessage(int rc, char buf[])
         if (success == false)
         {
             // needed for when we get no response from duino
-            buf[0] = dvalue; // id
-            buf[1] = tvalue; // action
+            buf[0] = itoa(dvalue); // id
+            buf[1] = itoa(tvalue); // action
             buf[2] = 0;      // type
             buf[3] = 0;      // extra
             write(fd, buf, 4);
