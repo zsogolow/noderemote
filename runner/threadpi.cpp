@@ -275,13 +275,12 @@ void listenForPackets()
     }
 }
 
-thread heartbeat;
 
 int main(int argc, char *argv[])
 {
     setup();
     thread t1(listenOnUnixSocket);
-    heartbeat(listenForPackets);
+    thread heartbeat(listenForPackets);
     heartbeat.join();
     t1.join();
     return 0;
