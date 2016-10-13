@@ -130,6 +130,8 @@ void prepareSocket(char *path)
         perror("connect error");
         exit(-1);
     }
+
+    isPrepared = true;
 }
 
 void handleSocketMessage(int rc, char buf[])
@@ -137,8 +139,12 @@ void handleSocketMessage(int rc, char buf[])
     bool success = false;
     int maxtries = 5;
     int numtries = 0;
-    prepareSocket("/tmp/responses");
 
+    if (!isPrepared)
+    {
+        prepareSocket("/tmp/responses");
+    }
+    
     if (rc == 2)
     {
         int dvalue = buf[0] - '0';
@@ -155,7 +161,6 @@ void handleSocketMessage(int rc, char buf[])
         if (success == false)
         {
             // needed for when we get no response from duino
-            fprintf(stderr, "%d", 0);
             buf[0] = dvalue; // id
             buf[1] = tvalue; // action
             buf[2] = 0;      // type
@@ -168,6 +173,7 @@ void handleSocketMessage(int rc, char buf[])
         // ignore it
     }
 }
+bool isPrepared = false;
 bool isActing = false;
 
 void listenOnUnixSocket()
