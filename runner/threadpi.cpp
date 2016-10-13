@@ -168,6 +168,7 @@ void handleSocketMessage(int rc, char buf[])
         // ignore it
     }
 }
+bool isActing = false;
 
 void listenOnUnixSocket()
 {
@@ -233,8 +234,6 @@ void listenOnUnixSocket()
         }
     }
 }
-
-bool isActing = false;
 
 Packet heard;
 void listenForPackets()
