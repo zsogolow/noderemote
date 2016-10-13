@@ -142,11 +142,6 @@ void handleSocketMessage(int rc, char buf[])
     int maxtries = 5;
     int numtries = 0;
 
-    if (!isPrepared)
-    {
-        prepareSocket("/tmp/responses");
-    }
-
     if (rc == 2)
     {
         int dvalue = buf[0] - '0';
@@ -298,6 +293,12 @@ void listenForPackets()
 int main(int argc, char *argv[])
 {
     setup();
+    
+    if (!isPrepared)
+    {
+        prepareSocket("/tmp/responses");
+    }
+
     thread t1(listenOnUnixSocket);
     thread heartbeat(listenForPackets);
     heartbeat.detach();
