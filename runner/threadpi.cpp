@@ -246,6 +246,9 @@ void listenOnUnixSocket()
 Packet heard;
 void listenForPackets()
 {
+    isActing = false;
+    radio.startListening();
+    
     while (1)
     {
         if (!isActing && radio.available())
@@ -296,8 +299,6 @@ int main(int argc, char *argv[])
 {
     setup();
     thread t1(listenOnUnixSocket);
-    isActing = false;
-    radio.startListening();
     thread heartbeat(listenForPackets);
     heartbeat.join();
     t1.join();
