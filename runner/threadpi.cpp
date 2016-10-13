@@ -290,6 +290,8 @@ int main(int argc, char *argv[])
 {
     setup();
     thread t1(listenOnUnixSocket);
+    isActing = false;
+    radio.startListening();
     thread heartbeat(listenForPackets);
     heartbeat.join();
     t1.join();
