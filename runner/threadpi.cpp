@@ -141,6 +141,8 @@ mutex m;
 
 void handleSocketMessage(int rc, char buf[])
 {
+    m.lock();
+
     bool success = false;
     int maxtries = 5;
     int numtries = 0;
@@ -185,6 +187,8 @@ void handleSocketMessage(int rc, char buf[])
             prepareSocket("/tmp/responses");
         }
     }
+    
+    m.unlock();
 }
 
 bool isActing = false;
@@ -236,12 +240,10 @@ void listenOnUnixSocket()
 
         while ((rc = read(cl, buf, sizeof(buf))) > 0)
         {
-            m.lock();
             printf("read %u bytes: %.*s\n", rc, rc, buf);
             isActing = true;
             handleSocketMessage(rc, buf);
             isActing = false;
-            m.unlock();
         }
         if (rc == -1)
         {
