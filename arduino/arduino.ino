@@ -15,6 +15,7 @@ int relayPin = 7;
 
 boolean timePassed;
 unsigned long time;
+long heartbeatInterval = 30000;
 
 void setup(void)
 {
@@ -129,7 +130,7 @@ void loop(void)
     }
     else
     {
-        if (time + 10000 < now)
+        if (time + heartbeatInterval < now)
         {
             timePassed = true;
         }
