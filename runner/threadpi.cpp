@@ -138,6 +138,7 @@ void prepareSocket(char *path)
 }
 
 mutex m;
+bool isActing = false;
 
 void handleSocketMessage(int rc, char buf[])
 {
@@ -193,7 +194,6 @@ void handleSocketMessage(int rc, char buf[])
     m.unlock();
 }
 
-bool isActing = false;
 
 void listenOnUnixSocket()
 {
