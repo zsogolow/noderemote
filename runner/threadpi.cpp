@@ -165,9 +165,22 @@ void handleSocketMessage(int rc, char buf[])
             write(fd, buf, 4);
         }
     }
-    else
+    else if (rc == 4)
     {
-        // ignore it
+        // check for all zeroes, thats the init action
+        bool allZeroes = true;
+        for (int i = 0; i < rc; i++)
+        {
+            if (buf[i] != '0')
+            {
+                allZeroes = false;
+                break;
+            }
+        }
+        if (allZeroes && !isPrepared)
+        {
+            prepareSocket("/tmp/responses");
+        }
     }
 }
 
@@ -293,12 +306,6 @@ void listenForPackets()
 int main(int argc, char *argv[])
 {
     setup();
-    
-    if (!isPrepared)
-    {
-        prepareSocket("/tmp/responses");
-    }
-
     thread t1(listenOnUnixSocket);
     thread heartbeat(listenForPackets);
     heartbeat.detach();
