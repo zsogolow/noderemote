@@ -187,7 +187,7 @@ void handleSocketMessage(int rc, char buf[])
             prepareSocket("/tmp/responses");
         }
     }
-    
+
     m.unlock();
 }
 
@@ -242,7 +242,8 @@ void listenOnUnixSocket()
         {
             printf("read %u bytes: %.*s\n", rc, rc, buf);
             isActing = true;
-            handleSocketMessage(rc, buf);
+            thread handled(handleSocketMessage, rc, buf);
+            handled.join();
             isActing = false;
         }
         if (rc == -1)
