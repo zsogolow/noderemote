@@ -4,6 +4,7 @@
 #include <sys/un.h>
 #include <stdlib.h>
 #include <thread>
+#include <mutex>
 #include <ctype.h>
 #include <getopt.h>
 #include <cstdlib>
@@ -136,6 +137,8 @@ void prepareSocket(char *path)
     isPrepared = true;
 }
 
+mutex m;
+
 void handleSocketMessage(int rc, char buf[])
 {
     bool success = false;
@@ -233,10 +236,12 @@ void listenOnUnixSocket()
 
         while ((rc = read(cl, buf, sizeof(buf))) > 0)
         {
+            m.lock();
             printf("read %u bytes: %.*s\n", rc, rc, buf);
             isActing = true;
             handleSocketMessage(rc, buf);
             isActing = false;
+            m.unlock();
         }
         if (rc == -1)
         {
