@@ -9,7 +9,7 @@ RF24 radio(9, 10);
 
 #define ID 3
 
-int duty = SENSOR_DUINO;
+int duty = TEMP_DUINO;
 int blinkPin = 8;
 int relayPin = 7;
 int tempPin = 5;
@@ -29,14 +29,23 @@ void initSelf()
 {
     switch (duty)
     {
-    case SENSOR_DUINO:
+    case TEMP_DUINO:
         analogReference(INTERNAL);
         break;
     case RELAY_DUINO:
     case GENERAL_DUINO:
+    case MOTION_DUINO:
     default:
         break;
     }
+
+    
+    Packet packet;
+    packet.id = ID;
+    packet.action = HEARTBEAT;
+    packet.extra = 0;
+    packet.type = duty;
+    sendCallback(packet);
 }
 
 void setup(void)
@@ -184,7 +193,7 @@ void loop(void)
             delay(10);
         }
     }
-    else
+    else if (duty == TEMP_DUINO)
     {
         if (readSensor)
         {

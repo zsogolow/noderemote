@@ -7,15 +7,20 @@
 // Set up nRF24L01 radio on SPI bus plus pins 9 & 10
 RF24 radio(9, 10);
 
-#define ID 1
+#define ID 2
 
-int duty = RELAY_DUINO;
+int duty = MOTION_DUINO;
 int blinkPin = 8;
 int relayPin = 7;
+int motionPin = 2;
 
 boolean timePassed;
 unsigned long time;
 long heartbeatInterval = 30000;
+
+boolean readSensor;
+unsigned long lastReadingTime;
+long readingInterval = 2000;
 
 void initSelf()
 {
@@ -31,7 +36,6 @@ void initSelf()
         break;
     }
 
-    
     Packet packet;
     packet.id = ID;
     packet.action = HEARTBEAT;
@@ -111,7 +115,7 @@ Packet handleAction(Packet packet)
     handled.id = packet.id;
     handled.action = packet.action;
     handled.type = duty;
-    
+
     switch (packet.action)
     {
     case BLINK:
@@ -183,6 +187,31 @@ void loop(void)
             sendCallback(cb);
 
             delay(10);
+        }
+    }
+    else if (duty == MOTION_DUINO)
+    {
+        if (readSensor)
+        {
+            int motionDetected = digitalRead(motionPin);
+            switchRelay(motionDetected);            
+            Serial.println(motionDetected);
+            Packet packet;
+            packet.id = ID;
+            packet.action = SENSOR_DATA;
+            packet.extra = motionDetected;
+            packet.type = duty;
+            sendCallback(packet);
+            delay(10);
+            lastReadingTime = millis();
+            readSensor = false;
+        }
+        else
+        {
+            if (lastReadingTime + readingInterval < now)
+            {
+                readSensor = true;
+            }
         }
     }
 }

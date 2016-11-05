@@ -17,6 +17,30 @@ boolean timePassed;
 unsigned long time;
 long heartbeatInterval = 30000;
 
+
+void initSelf()
+{
+    switch (duty)
+    {
+    case TEMP_DUINO:
+        analogReference(INTERNAL);
+        break;
+    case RELAY_DUINO:
+    case GENERAL_DUINO:
+    case MOTION_DUINO:
+    default:
+        break;
+    }
+
+    
+    Packet packet;
+    packet.id = ID;
+    packet.action = HEARTBEAT;
+    packet.extra = 0;
+    packet.type = duty;
+    sendCallback(packet);
+}
+
 void setup(void)
 {
     Serial.begin(9600);
@@ -38,6 +62,8 @@ void setup(void)
 
     radio.startListening();
     radio.printDetails();
+
+    initSelf();
 }
 
 void sendCallback(Packet callback)

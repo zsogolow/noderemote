@@ -21,7 +21,8 @@ struct Packet
 
 #define GENERAL_DUINO 21
 #define RELAY_DUINO 22
-#define SENSOR_DUINO 23
+#define TEMP_DUINO 23
+#define MOTION_DUINO 24
 
 #define EMPTY -1
 #define PING 1
