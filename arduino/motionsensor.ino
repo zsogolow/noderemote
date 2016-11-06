@@ -20,7 +20,8 @@ long heartbeatInterval = 30000;
 
 boolean readSensor;
 unsigned long lastReadingTime;
-long readingInterval = 2000;
+long readingInterval = 500;
+int lastSensorValue;
 
 void initSelf()
 {
@@ -194,7 +195,11 @@ void loop(void)
         if (readSensor)
         {
             int motionDetected = digitalRead(motionPin);
-            switchRelay(motionDetected);            
+            if (motionDetected != lastSensorValue)
+            {
+                switchRelay(motionDetected);
+            }
+            lastSensorValue = motionDetected;
             Serial.println(motionDetected);
             Packet packet;
             packet.id = ID;
