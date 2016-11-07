@@ -131,6 +131,7 @@ Packet handleAction(Packet packet)
         switchRelay(0);
         handled.extra = getRelayState();
         break;
+    case PING:
     default:
         handled.extra = 0;
         break;

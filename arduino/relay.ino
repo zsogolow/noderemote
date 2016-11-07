@@ -31,11 +31,10 @@ void initSelf()
         break;
     }
 
-    
     Packet packet;
     packet.id = ID;
     packet.action = HEARTBEAT;
-    packet.extra = 0;
+    packet.extra = getRelayState();
     packet.type = duty;
     sendCallback(packet);
 }
@@ -111,7 +110,7 @@ Packet handleAction(Packet packet)
     handled.id = packet.id;
     handled.action = packet.action;
     handled.type = duty;
-    
+
     switch (packet.action)
     {
     case BLINK:
@@ -130,6 +129,9 @@ Packet handleAction(Packet packet)
         switchRelay(0);
         handled.extra = getRelayState();
         break;
+    case PING:
+        handled.extra = getRelayState();
+        break;
     default:
         handled.extra = 0;
         break;
@@ -146,7 +148,7 @@ void loop(void)
         Packet packet;
         packet.id = ID;
         packet.action = HEARTBEAT;
-        packet.extra = 0;
+        packet.extra = getRelayState();
         packet.type = duty;
         blink(blinkPin, 10);
         sendCallback(packet);

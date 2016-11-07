@@ -110,7 +110,7 @@ Packet handleAction(Packet packet)
     handled.id = packet.id;
     handled.action = packet.action;
     handled.type = duty;
-    
+
     switch (packet.action)
     {
     case BLINK:
@@ -129,6 +129,7 @@ Packet handleAction(Packet packet)
         switchRelay(0);
         handled.extra = getRelayState();
         break;
+    case PING:
     default:
         handled.extra = 0;
         break;

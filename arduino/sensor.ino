@@ -23,6 +23,7 @@ unsigned long lastReadingTime;
 long readingInterval = 2000;
 
 float tempC;
+float tempF;
 int reading;
 
 void initSelf()
@@ -39,11 +40,10 @@ void initSelf()
         break;
     }
 
-    
     Packet packet;
     packet.id = ID;
     packet.action = HEARTBEAT;
-    packet.extra = 0;
+    packet.extra = tempF;
     packet.type = duty;
     sendCallback(packet);
 }
@@ -138,6 +138,9 @@ Packet handleAction(Packet packet)
         switchRelay(0);
         handled.extra = getRelayState();
         break;
+    case PING:
+        handled.extra = tempF; 
+        break;
     default:
         handled.extra = 0;
         break;
@@ -154,7 +157,7 @@ void loop(void)
         Packet packet;
         packet.id = ID;
         packet.action = HEARTBEAT;
-        packet.extra = 0;
+        packet.extra = tempF;
         packet.type = duty;
         blink(blinkPin, 10);
         sendCallback(packet);
@@ -199,7 +202,7 @@ void loop(void)
         {
             reading = analogRead(tempPin);
             tempC = reading / 9.31;
-            float tempF = (tempC * 1.8) + 32;
+            tempF = (tempC * 1.8) + 32;
             Serial.println(tempF);
             Packet packet;
             packet.id = ID;

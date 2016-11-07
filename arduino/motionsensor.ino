@@ -40,7 +40,7 @@ void initSelf()
     Packet packet;
     packet.id = ID;
     packet.action = HEARTBEAT;
-    packet.extra = 0;
+    packet.extra = lastSensorValue;
     packet.type = duty;
     sendCallback(packet);
 }
@@ -135,6 +135,9 @@ Packet handleAction(Packet packet)
         switchRelay(0);
         handled.extra = getRelayState();
         break;
+    case PING:
+        handled.extra = lastSensorValue;
+        break;
     default:
         handled.extra = 0;
         break;
@@ -151,7 +154,7 @@ void loop(void)
         Packet packet;
         packet.id = ID;
         packet.action = HEARTBEAT;
-        packet.extra = 0;
+        packet.extra = lastSensorValue;
         packet.type = duty;
         blink(blinkPin, 10);
         sendCallback(packet);
@@ -204,7 +207,7 @@ void loop(void)
             Packet packet;
             packet.id = ID;
             packet.action = SENSOR_DATA;
-            packet.extra = motionDetected;
+            packet.extra = lastSensorValue;
             packet.type = duty;
             sendCallback(packet);
             delay(10);
